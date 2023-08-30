@@ -15,7 +15,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExceptionFilter extends OncePerRequestFilter {
 
-    private  final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
