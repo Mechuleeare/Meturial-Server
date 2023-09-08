@@ -22,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_menu_notification")
 public class MenuNotification extends BaseUUIDEntity {
 
-    @Column(columnDefinition = "BIT(1)")
+    @Column(columnDefinition = "BIT(1) default 1", nullable = false)
     private Boolean isActivated;
 
     @OneToOne(fetch = FetchType.LAZY)
