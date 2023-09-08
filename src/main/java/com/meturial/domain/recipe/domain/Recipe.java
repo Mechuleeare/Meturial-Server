@@ -21,9 +21,9 @@ public class Recipe extends BaseUUIDEntity {
     @Column(columnDefinition = "VARCHAR(255)", nullable = false)
     private String foodImageUrl;
 
-    @Column(columnDefinition = "VARCHAR(100)", nullable = false)
+    @Column(columnDefinition = "VARCHAR(10)", nullable = false)
     private String name;
 
-    @Column(columnDefinition = "VARCHAR(10)", nullable = false)
+    @Column(columnDefinition = "VARCHAR(100)", nullable = false)
     private String material;
 }
