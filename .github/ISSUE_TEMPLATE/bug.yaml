@@ -1,0 +1,17 @@
+name: "Bug"
+description: "버그가 생겼어요 😠"
+labels: 버그
+body:
+  - type: textarea
+    attributes:
+      label: Describe
+      description: |
+        버그에 관한 설명을 간단하게 작성해주세요.
+      placeholder: |
+        매우 심각한 버그에요!
+
+  - type: textarea
+    attributes:
+      label: How
+      description: |
+        어떤 API 에서 생기는 버그인지 간단하게 설명해주세요.
