@@ -29,7 +29,7 @@ public class Review extends BaseUUIDEntity {
     @Column(columnDefinition = "VARCHAR(500)", nullable = false)
     private String content;
 
-    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
+    @Column(columnDefinition = "VARCHAR(255)")
     private String reviewImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
