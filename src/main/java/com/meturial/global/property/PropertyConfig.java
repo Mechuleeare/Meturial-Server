@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 
 @EnableConfigurationProperties(value = {JwtProperty.class})
 @Configuration
-public class EnableConfigurationPropertiesConfig {
+public class PropertyConfig {
 }
