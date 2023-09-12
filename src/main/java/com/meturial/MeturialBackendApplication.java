@@ -11,5 +11,4 @@ public class MeturialBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(MeturialBackendApplication.class, args);
     }
-
 }
