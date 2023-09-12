@@ -17,8 +17,8 @@ spring:
 
   data:
     redis:
-      port: ${REDIS_PORT:localhost}
-      host: ${REDIS_HOST:6379}
+      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST:localhost}
 
 jwt:
   secret_key: ${SECRET_KEY}
@@ -26,3 +26,6 @@ jwt:
   refresh_exp: ${REFRESH_EXP}
   header: ${HEADER}
   prefix: ${PREFIX}
+
+firebase:
+  path: ${FIREBASE_PATH}
