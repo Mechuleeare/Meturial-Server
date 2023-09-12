@@ -14,3 +14,15 @@ spring:
 
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+  data:
+    redis:
+      port: ${REDIS_PORT:localhost}
+      host: ${REDIS_HOST:6379}
+
+jwt:
+  secret_key: ${SECRET_KEY}
+  access_exp: ${ACCESS_EXP}
+  refresh_exp: ${REFRESH_EXP}
+  header: ${HEADER}
+  prefix: ${PREFIX}
