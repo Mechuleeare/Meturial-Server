@@ -30,11 +30,17 @@ dependencies {
     // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     // configuration
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // crypto
+    implementation 'org.springframework.security:spring-security-crypto'
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -49,8 +55,14 @@ dependencies {
     // fcm
     implementation 'com.google.firebase:firebase-admin:9.1.1'
 
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // apache
+    implementation group: 'org.apache.commons', name: 'commons-lang3'
 }
 
 tasks.named('test') {
