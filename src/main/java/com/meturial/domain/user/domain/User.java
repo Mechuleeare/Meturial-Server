@@ -27,7 +27,7 @@ public class User extends BaseUUIDEntity {
     @Column(columnDefinition = "VARCHAR(10)", nullable = false)
     private String name;
 
-    @Column(columnDefinition = "VARCHAR(255)")
+    @Column(columnDefinition = "VARCHAR(255) default '기본이미지'")
     private String profileImageUrl;
 
     @Column(columnDefinition = "VARCHAR(255)", nullable = false)
