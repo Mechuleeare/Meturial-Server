@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class UserSignUpService {
+public class UserService {
 
     private final MailService mailService;
     private final CertificationRepository certificationRepository;

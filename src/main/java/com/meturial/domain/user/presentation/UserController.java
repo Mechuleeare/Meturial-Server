@@ -2,7 +2,7 @@ package com.meturial.domain.user.presentation;
 
 import com.meturial.domain.auth.presentation.dto.request.EmailVerifiedRequest;
 import com.meturial.domain.user.presentation.dto.request.UserSignUpRequest;
-import com.meturial.domain.user.service.UserSignUpService;
+import com.meturial.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
 
-    private final UserSignUpService userSignUpService;
+    private final UserService userService;
 
     @PostMapping("/email")
     public void verifyAccount(@RequestBody @Valid EmailVerifiedRequest request) {
-        userSignUpService.verifyAccount(request);
+        userService.verifyAccount(request);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
     public void signUp(@RequestBody @Valid UserSignUpRequest request) {
-        userSignUpService.signUp(request);
+        userService.signUp(request);
     }
 }
