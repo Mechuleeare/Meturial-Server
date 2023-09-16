@@ -13,6 +13,7 @@ public enum ErrorCode {
     CODE_ALREADY_EXPIRED(401, "Code Already Expired"),
     EMAIL_NOT_CERTIFIED(401, "Email Not Certified"),
     CODE_NOT_CORRECT(401, "Code Not Correct"),
+    UN_AUTHORIZED(401, "Un Authorized"),
 
     USER_NOT_FOUND(404, "User Not Found"),
     USER_EXIST(409, "User Exist"),
