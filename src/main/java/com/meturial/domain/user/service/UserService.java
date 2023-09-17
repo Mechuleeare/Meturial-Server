@@ -7,7 +7,7 @@ import com.meturial.domain.auth.exception.CodeAlreadyExpiredException;
 import com.meturial.domain.auth.exception.CodeNotCorrectException;
 import com.meturial.domain.auth.exception.EmailNotCertifiedException;
 import com.meturial.domain.auth.presentation.dto.request.EmailVerifiedRequest;
-import com.meturial.domain.auth.service.MailService;
+import com.meturial.domain.auth.service.AuthService;
 import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
 import com.meturial.domain.user.exception.UserExistException;
@@ -21,32 +21,32 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-    private final MailService mailService;
+    private final AuthService authService;
     private final CertificationRepository certificationRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signUp(UserSignUpRequest request) {
-
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw UserExistException.EXCEPTION;
         }
 
-        mailService.sendEmail(request.getEmail());
+        authService.sendEmail(request.getEmail());
 
         Certification certification = certificationRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
 
-        if (certification.getCertified() == (Certified.CERTIFIED)) {
-            userRepository.save(User.builder()
-                    .name(request.getName())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .email(request.getEmail())
-                    .deviceToken(request.getDeviceToken())
-                    .build());
+        if (certification.getCertified() != Certified.CERTIFIED) {
+            throw EmailNotCertifiedException.EXCEPTION;
+        }
 
-        } else throw EmailNotCertifiedException.EXCEPTION;
+        userRepository.save(User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .deviceToken(request.getDeviceToken())
+                .build());
     }
 
     @Transactional
