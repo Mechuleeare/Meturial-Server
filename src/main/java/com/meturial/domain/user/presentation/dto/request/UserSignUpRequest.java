@@ -1,13 +1,10 @@
 package com.meturial.domain.user.presentation.dto.request;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 @Getter
 @NoArgsConstructor
@@ -26,10 +23,12 @@ public class UserSignUpRequest {
     @Size(max = 64, message = "이메일은 64자 이하여야 합니다.")
     private String email;
 
-    @Nullable
     private String profileImageUrl;
 
     @NotBlank
     @Size(max = 255)
     private String deviceToken;
+
+    @Size(max = 300)
+    private String allergyInfo;
 }
