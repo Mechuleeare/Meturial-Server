@@ -5,7 +5,6 @@ import com.meturial.domain.auth.domain.repository.CertificationRepository;
 import com.meturial.domain.auth.domain.type.Certified;
 import com.meturial.domain.auth.exception.CodeAlreadyExpiredException;
 import com.meturial.domain.auth.exception.CodeNotCorrectException;
-import com.meturial.domain.auth.exception.EmailNotCertifiedException;
 import com.meturial.domain.auth.presentation.dto.request.EmailVerifiedRequest;
 import com.meturial.domain.auth.service.AuthService;
 import com.meturial.domain.user.domain.User;
@@ -37,15 +36,14 @@ public class UserService {
         Certification certification = certificationRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
 
-        if (certification.getCertified() != Certified.CERTIFIED) {
-            throw EmailNotCertifiedException.EXCEPTION;
-        }
+        certification.checkIsCertified();
 
         userRepository.save(User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
                 .deviceToken(request.getDeviceToken())
+                .allergyInfo(request.getAllergyInfo())
                 .build());
     }
 

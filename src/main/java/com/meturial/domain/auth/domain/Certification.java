@@ -1,6 +1,7 @@
 package com.meturial.domain.auth.domain;
 
 import com.meturial.domain.auth.domain.type.Certified;
+import com.meturial.domain.auth.exception.EmailNotCertifiedException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +39,11 @@ public class Certification implements Serializable {
     public Certification updateCertified(Certified certified) {
         this.certified = certified;
         return this;
+    }
+
+    public void checkIsCertified() {
+        if (this.getCertified() != Certified.CERTIFIED) {
+            throw EmailNotCertifiedException.EXCEPTION;
+        }
     }
 }

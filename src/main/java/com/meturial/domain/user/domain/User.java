@@ -32,4 +32,7 @@ public class User extends BaseUUIDEntity {
 
     @Column(columnDefinition = "VARCHAR(255)", nullable = false)
     private String deviceToken;
+
+    @Column(columnDefinition = "VARCHAR(300)")
+    private String allergyInfo;
 }
