@@ -1,16 +1,12 @@
 package com.meturial.global.security.auth;
 
-import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
 import com.meturial.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
