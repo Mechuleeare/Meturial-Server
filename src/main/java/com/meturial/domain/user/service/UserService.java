@@ -11,6 +11,8 @@ import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
 import com.meturial.domain.user.exception.UserExistException;
 import com.meturial.domain.user.presentation.dto.request.UserSignUpRequest;
+import com.meturial.domain.user.presentation.dto.response.QueryMyInfoResponse;
+import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class UserService {
     private final CertificationRepository certificationRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityFacade securityFacade;
 
     @Transactional
     public void signUp(UserSignUpRequest request) {
@@ -53,5 +56,17 @@ public class UserService {
                 .filter(s -> request.getCode().equals(s.getCode()))
                 .map(certification -> certificationRepository.save(certification.updateCertified(Certified.CERTIFIED)))
                 .orElseThrow(() -> CodeNotCorrectException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
+    public QueryMyInfoResponse getMyInfo() {
+        User user = securityFacade.getCurrentUser();
+
+        return QueryMyInfoResponse.builder()
+                .profileImageUrl(user.getProfileImageUrl())
+                .name(user.getName())
+                .allergyInfo(user.getAllergyInfo())
+                .email(user.getEmail())
+                .build();
     }
 }
