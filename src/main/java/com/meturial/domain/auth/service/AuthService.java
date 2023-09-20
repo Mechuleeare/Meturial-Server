@@ -1,14 +1,18 @@
 package com.meturial.domain.auth.service;
 
 import com.meturial.domain.auth.domain.Certification;
+import com.meturial.domain.auth.domain.RefreshToken;
 import com.meturial.domain.auth.domain.repository.CertificationRepository;
+import com.meturial.domain.auth.domain.repository.RefreshTokenRepository;
 import com.meturial.domain.auth.domain.type.Certified;
+import com.meturial.domain.auth.exception.RefreshTokenNotFoundException;
 import com.meturial.domain.auth.exception.SendMessageFailedException;
 import com.meturial.domain.auth.exception.UnAuthorizedException;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
+import com.meturial.global.security.SecurityFacade;
 import com.meturial.global.security.jwt.JwtTokenProvider;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -28,8 +32,10 @@ public class AuthService {
     private final JavaMailSender javaMailSender;
     private final CertificationRepository certificationRepository;
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final SecurityFacade securityFacade;
 
     @Value("${code.exp}")
     private Integer CODE_EXP;
@@ -78,5 +84,15 @@ public class AuthService {
         }
 
         return jwtTokenProvider.getTokens(user.getEmail());
+    }
+
+    @Transactional
+    public void logOut() {
+        User user = securityFacade.getCurrentUser();
+
+        RefreshToken refreshToken = refreshTokenRepository.findById(user.getEmail())
+                .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
+
+        refreshTokenRepository.delete(refreshToken);
     }
 }
