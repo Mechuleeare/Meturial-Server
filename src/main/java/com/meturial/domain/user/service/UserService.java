@@ -10,6 +10,7 @@ import com.meturial.domain.auth.service.AuthService;
 import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
 import com.meturial.domain.user.exception.UserExistException;
+import com.meturial.domain.user.presentation.dto.request.ModifyMypageRequest;
 import com.meturial.domain.user.presentation.dto.request.UserSignUpRequest;
 import com.meturial.domain.user.presentation.dto.response.QueryMyInfoResponse;
 import com.meturial.global.security.SecurityFacade;
@@ -45,6 +46,7 @@ public class UserService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
+                .profileImageUrl(request.getProfileImageUrl())
                 .deviceToken(request.getDeviceToken())
                 .allergyInfo(request.getAllergyInfo())
                 .build());
@@ -68,5 +70,16 @@ public class UserService {
                 .allergyInfo(user.getAllergyInfo())
                 .email(user.getEmail())
                 .build();
+    }
+
+    @Transactional
+    public void modifyMypage(ModifyMypageRequest request) {
+        User user = securityFacade.getCurrentUser();
+
+        user.modifyMypage(
+                request.getProfileImageUrl(),
+                request.getName(),
+                request.getAllergyInfo()
+        );
     }
 }

@@ -35,4 +35,10 @@ public class User extends BaseUUIDEntity {
 
     @Column(columnDefinition = "VARCHAR(300)")
     private String allergyInfo;
+
+    public void modifyMypage(String profileImageUrl, String name, String allergyInfo) {
+        this.profileImageUrl = profileImageUrl;
+        this.name = name;
+        this.allergyInfo = allergyInfo;
+    }
 }
