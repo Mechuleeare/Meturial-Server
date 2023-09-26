@@ -63,6 +63,9 @@ dependencies {
 
     // apache
     implementation group: 'org.apache.commons', name: 'commons-lang3'
+
+    // javax.xml.bind
+    implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
 }
 
 tasks.named('test') {
