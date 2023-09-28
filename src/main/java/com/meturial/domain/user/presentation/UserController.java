@@ -20,8 +20,6 @@ public class UserController {
 
     @PostMapping("/email")
     public void sendEmail(@RequestBody SendEmailRequest request) {
-        System.out.println(request);
-        System.out.println(request.getEmail());
         userService.sendEmail(request);
     }
 
