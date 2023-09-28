@@ -6,6 +6,7 @@ import com.meturial.domain.auth.domain.type.Certified;
 import com.meturial.domain.auth.exception.CodeAlreadyExpiredException;
 import com.meturial.domain.auth.exception.CodeNotCorrectException;
 import com.meturial.domain.auth.presentation.dto.request.EmailVerifiedRequest;
+import com.meturial.domain.auth.presentation.dto.request.SendEmailRequest;
 import com.meturial.domain.auth.service.AuthService;
 import com.meturial.domain.user.domain.User;
 import com.meturial.domain.user.domain.repository.UserRepository;
@@ -35,8 +36,6 @@ public class UserService {
             throw UserExistException.EXCEPTION;
         }
 
-        authService.sendEmail(request.getEmail());
-
         Certification certification = certificationRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
 
@@ -53,7 +52,12 @@ public class UserService {
     }
 
     @Transactional
-    public void verifyAccount(EmailVerifiedRequest request) {
+    public void sendEmail(SendEmailRequest request) {
+        authService.sendEmail(request.getEmail());
+    }
+
+    @Transactional
+    public void verifyCode(EmailVerifiedRequest request) {
         certificationRepository.findByEmail(request.getEmail())
                 .filter(s -> request.getCode().equals(s.getCode()))
                 .map(certification -> certificationRepository.save(certification.updateCertified(Certified.CERTIFIED)))
