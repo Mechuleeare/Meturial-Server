@@ -1,6 +1,7 @@
 package com.meturial.domain.user.presentation;
 
 import com.meturial.domain.auth.presentation.dto.request.EmailVerifiedRequest;
+import com.meturial.domain.auth.presentation.dto.request.SendEmailRequest;
 import com.meturial.domain.user.presentation.dto.request.ModifyMypageRequest;
 import com.meturial.domain.user.presentation.dto.request.UserSignUpRequest;
 import com.meturial.domain.user.presentation.dto.response.QueryMyInfoResponse;
@@ -18,8 +19,15 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/email")
-    public void verifyAccount(@RequestBody @Valid EmailVerifiedRequest request) {
-        userService.verifyAccount(request);
+    public void sendEmail(@RequestBody SendEmailRequest request) {
+        System.out.println(request);
+        System.out.println(request.getEmail());
+        userService.sendEmail(request);
+    }
+
+    @PostMapping("/verify")
+    public void verifyCode(@RequestBody @Valid EmailVerifiedRequest request) {
+        userService.verifyCode(request);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
