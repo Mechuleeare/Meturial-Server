@@ -5,9 +5,11 @@ import com.meturial.domain.auth.domain.RefreshToken;
 import com.meturial.domain.auth.domain.repository.CertificationRepository;
 import com.meturial.domain.auth.domain.repository.RefreshTokenRepository;
 import com.meturial.domain.auth.domain.type.Certified;
+import com.meturial.domain.auth.exception.CodeAlreadyExpiredException;
 import com.meturial.domain.auth.exception.RefreshTokenNotFoundException;
 import com.meturial.domain.auth.exception.SendMessageFailedException;
 import com.meturial.domain.auth.exception.UnAuthorizedException;
+import com.meturial.domain.auth.presentation.dto.request.FindPasswordRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.user.domain.User;
@@ -94,5 +96,19 @@ public class AuthService {
                 .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
         refreshTokenRepository.delete(refreshToken);
+    }
+
+    public void findPassword(FindPasswordRequest request) {
+
+        Certification certification = certificationRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
+
+        certification.checkIsCertified();
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> UnAuthorizedException.EXCEPTION);
+
+        user.findPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
     }
 }
