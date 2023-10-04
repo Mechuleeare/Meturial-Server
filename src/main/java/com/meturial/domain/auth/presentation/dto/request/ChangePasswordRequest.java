@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class FindPasswordRequest {
+public class ChangePasswordRequest {
 
     @Email
     @NotBlank

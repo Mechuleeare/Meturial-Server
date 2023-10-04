@@ -9,7 +9,7 @@ import com.meturial.domain.auth.exception.CodeAlreadyExpiredException;
 import com.meturial.domain.auth.exception.RefreshTokenNotFoundException;
 import com.meturial.domain.auth.exception.SendMessageFailedException;
 import com.meturial.domain.auth.exception.UnAuthorizedException;
-import com.meturial.domain.auth.presentation.dto.request.FindPasswordRequest;
+import com.meturial.domain.auth.presentation.dto.request.ChangePasswordRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.user.domain.User;
@@ -99,7 +99,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void findPassword(FindPasswordRequest request) {
+    public void changePassword(ChangePasswordRequest request) {
 
         Certification certification = certificationRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
@@ -109,6 +109,6 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> UnAuthorizedException.EXCEPTION);
 
-        user.findPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.changePassword(passwordEncoder.encode(request.getNewPassword()));
     }
 }

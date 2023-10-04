@@ -42,7 +42,7 @@ public class User extends BaseUUIDEntity {
         this.allergyInfo = allergyInfo;
     }
 
-    public void findPassword(String password) {
+    public void changePassword(String password) {
         this.password = password;
     }
 }

@@ -1,6 +1,6 @@
 package com.meturial.domain.auth.presentation;
 
-import com.meturial.domain.auth.presentation.dto.request.FindPasswordRequest;
+import com.meturial.domain.auth.presentation.dto.request.ChangePasswordRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.auth.service.AuthService;
@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PutMapping("/find")
-    public void findPassword(@RequestBody @Valid FindPasswordRequest request) {
-        authService.findPassword(request);
+    public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        authService.changePassword(request);
     }
 }
