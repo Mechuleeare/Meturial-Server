@@ -1,16 +1,13 @@
 package com.meturial.domain.auth.presentation;
 
+import com.meturial.domain.auth.presentation.dto.request.ChangePasswordRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.auth.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -28,5 +25,10 @@ public class AuthController {
     @DeleteMapping("/logout")
     public void logOut() {
         authService.logOut();
+    }
+
+    @PutMapping("/find")
+    public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        authService.changePassword(request);
     }
 }
