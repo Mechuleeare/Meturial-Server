@@ -98,6 +98,7 @@ public class AuthService {
         refreshTokenRepository.delete(refreshToken);
     }
 
+    @Transactional
     public void findPassword(FindPasswordRequest request) {
 
         Certification certification = certificationRepository.findByEmail(request.getEmail())
@@ -109,6 +110,5 @@ public class AuthService {
                 .orElseThrow(() -> UnAuthorizedException.EXCEPTION);
 
         user.findPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(user);
     }
 }
