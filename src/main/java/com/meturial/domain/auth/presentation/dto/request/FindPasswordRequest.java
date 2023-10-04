@@ -16,5 +16,5 @@ public class FindPasswordRequest {
 
     @NotBlank
     @Size(min = 8, max = 60, message = "비밀번호는 8~60자여야 합니다.")
-    private String password;
+    private String newPassword;
 }

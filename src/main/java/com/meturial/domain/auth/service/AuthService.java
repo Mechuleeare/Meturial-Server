@@ -109,6 +109,6 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> UnAuthorizedException.EXCEPTION);
 
-        user.findPassword(passwordEncoder.encode(request.getPassword()));
+        user.findPassword(passwordEncoder.encode(request.getNewPassword()));
     }
 }
