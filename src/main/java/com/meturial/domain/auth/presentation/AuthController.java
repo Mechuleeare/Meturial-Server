@@ -1,7 +1,6 @@
 package com.meturial.domain.auth.presentation;
 
 import com.meturial.domain.auth.presentation.dto.request.ChangePasswordRequest;
-import com.meturial.domain.auth.presentation.dto.request.ReissueRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.auth.service.AuthService;
@@ -28,9 +27,9 @@ public class AuthController {
         authService.logOut();
     }
 
-    @PostMapping("/reissue")
-    public TokenResponse reissuanceToken(@RequestBody @Valid ReissueRequest request) {
-        return authService.reissueToken(request);
+    @PutMapping("/reissue")
+    public TokenResponse reissuanceToken(@RequestHeader("authorization") String refreshToken) {
+        return authService.reissueToken(refreshToken);
     }
 
     @PutMapping("/find")

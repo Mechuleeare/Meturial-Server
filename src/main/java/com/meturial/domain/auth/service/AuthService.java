@@ -10,7 +10,6 @@ import com.meturial.domain.auth.exception.RefreshTokenNotFoundException;
 import com.meturial.domain.auth.exception.SendMessageFailedException;
 import com.meturial.domain.auth.exception.UnAuthorizedException;
 import com.meturial.domain.auth.presentation.dto.request.ChangePasswordRequest;
-import com.meturial.domain.auth.presentation.dto.request.ReissueRequest;
 import com.meturial.domain.auth.presentation.dto.request.UserSignInRequest;
 import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.domain.user.domain.User;
@@ -20,7 +19,6 @@ import com.meturial.global.security.jwt.JwtTokenProvider;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,8 +102,10 @@ public class AuthService {
         refreshTokenRepository.delete(refreshToken);
     }
 
-    public TokenResponse reissueToken(ReissueRequest request) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.getRefreshToken())
+    public TokenResponse reissueToken(String token) {
+        String cuttingToken = token.substring(7);
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(cuttingToken)
                 .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
         refreshTokenRepository.delete(refreshToken);
