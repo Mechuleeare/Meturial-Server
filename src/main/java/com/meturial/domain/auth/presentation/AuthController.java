@@ -27,6 +27,11 @@ public class AuthController {
         authService.logOut();
     }
 
+    @PutMapping("/reissue")
+    public TokenResponse reissueToken(@RequestHeader("Refresh-Token") String refreshToken) {
+        return authService.reissueToken(refreshToken);
+    }
+
     @PutMapping("/find")
     public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
         authService.changePassword(request);

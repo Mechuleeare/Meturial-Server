@@ -44,7 +44,6 @@ public class JwtTokenProvider {
         refreshTokenRepository.save(RefreshToken.builder()
                 .email(email)
                 .token(refreshToken)
-                .ttl(jwtProperty.getRefreshExpiration())
                 .build());
 
         return refreshToken;

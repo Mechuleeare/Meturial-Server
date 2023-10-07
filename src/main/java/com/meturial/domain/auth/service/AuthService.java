@@ -85,6 +85,10 @@ public class AuthService {
             throw UnAuthorizedException.EXCEPTION;
         }
 
+        if (refreshTokenRepository.existsById(user.getEmail())) {
+            refreshTokenRepository.deleteById(user.getEmail());
+        }
+
         return jwtTokenProvider.getTokens(user.getEmail());
     }
 
@@ -96,6 +100,17 @@ public class AuthService {
                 .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
         refreshTokenRepository.delete(refreshToken);
+    }
+
+    public TokenResponse reissueToken(String token) {
+        String cuttingToken = token.substring(7);
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(cuttingToken)
+                .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
+
+        refreshTokenRepository.delete(refreshToken);
+
+        return jwtTokenProvider.getTokens(refreshToken.getEmail());
     }
 
     @Transactional
