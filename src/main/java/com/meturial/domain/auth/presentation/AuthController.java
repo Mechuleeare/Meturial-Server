@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PutMapping("/reissue")
-    public TokenResponse reissuanceToken(@RequestHeader("authorization") String refreshToken) {
+    public TokenResponse reissueToken(@RequestHeader("Refresh-Token") String refreshToken) {
         return authService.reissueToken(refreshToken);
     }
 
