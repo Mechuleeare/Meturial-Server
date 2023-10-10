@@ -21,9 +21,6 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_recipe_sequence")
 public class RecipeSequence extends BaseUUIDEntity {
 
-    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
-    private String recipeImageUrl;
-
     @Column(columnDefinition = "INT", nullable = false)
     private Integer sequence;
 
