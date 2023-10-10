@@ -26,4 +26,7 @@ public class Recipe extends BaseUUIDEntity {
 
     @Column(columnDefinition = "VARCHAR(100)", nullable = false)
     private String material;
+
+    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
+    private String tip;
 }
