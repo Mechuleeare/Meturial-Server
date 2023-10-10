@@ -10,9 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperty {
 
-    private final String header;
-    private final String prefix;
-    private final String  secretKey;
+    private final String secretKey;
 
     @Value("${jwt.access_exp}")
     private final Long accessExpiration;

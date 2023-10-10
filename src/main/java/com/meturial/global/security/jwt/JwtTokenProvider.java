@@ -23,6 +23,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
+    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer ";
     private final JwtProperty jwtProperty;
     private final AuthDetailsService authDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -62,13 +64,13 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader(jwtProperty.getHeader());
+        String bearer = request.getHeader(HEADER);
         return parseToken(bearer);
     }
 
     public String parseToken(String bearerToken) {
-        if (bearerToken != null && bearerToken.startsWith(jwtProperty.getPrefix())) {
-            return bearerToken.replace(jwtProperty.getPrefix(), "");
+        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+            return bearerToken.replace(PREFIX, "");
         }
         return null;
     }
