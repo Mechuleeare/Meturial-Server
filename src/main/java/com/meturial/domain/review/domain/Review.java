@@ -23,8 +23,8 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_review")
 public class Review extends BaseUUIDEntity {
 
-    @Column(columnDefinition = "INT", nullable = false)
-    private Integer starRating;
+    @Column(columnDefinition = "FLOAT", nullable = false)
+    private Float starRating;
 
     @Column(columnDefinition = "VARCHAR(500)", nullable = false)
     private String content;
