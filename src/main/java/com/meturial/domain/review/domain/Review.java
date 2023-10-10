@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -31,6 +33,9 @@ public class Review extends BaseUUIDEntity {
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String reviewImageUrl;
+
+    @Column(columnDefinition = "DATETIME")
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "recipe_id", nullable = false)
