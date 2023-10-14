@@ -12,7 +12,7 @@ public class ChoiceRecipeFacade {
 
     private final ChoiceRecipeRepository choiceRecipeRepository;
 
-    public boolean checkChoiceRecipe(User user, Recipe recipe) {
+    public boolean findExistedChoiceRecipe(User user, Recipe recipe) {
         return choiceRecipeRepository.existsByUserAndRecipe(user, recipe);
     }
 }

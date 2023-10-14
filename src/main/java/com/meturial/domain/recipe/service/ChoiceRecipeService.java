@@ -24,9 +24,9 @@ public class ChoiceRecipeService {
 
     public void addChoice(UUID recipeId) {
         User user = securityFacade.getCurrentUser();
-        Recipe recipe = recipeFacade.checkRecipe(recipeId);
+        Recipe recipe = recipeFacade.findRecipe(recipeId);
 
-        if (choiceRecipeFacade.checkChoiceRecipe(user, recipe)) {
+        if (choiceRecipeFacade.findExistedChoiceRecipe(user, recipe)) {
             throw ChoiceRecipeExistException.EXCEPTION;
         }
 
