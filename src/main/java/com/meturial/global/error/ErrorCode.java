@@ -16,9 +16,11 @@ public enum ErrorCode {
     UN_AUTHORIZED(401, "Un Authorized"),
 
     USER_NOT_FOUND(404, "User Not Found"),
+    RECIPE_NOT_FOUND(404, "Recipe Not Found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
 
     USER_EXIST(409, "User Exist"),
+    CHOICE_RECIPE_EXIST(409, "Choice Recipe Exist"),
 
     SEND_MESSAGE_FAILED(500, "Send Message Failed"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");
