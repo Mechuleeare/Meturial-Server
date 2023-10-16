@@ -4,12 +4,14 @@ import com.meturial.domain.recipe.domain.ChoiceRecipe;
 import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.exception.ChoiceRecipeExistException;
+import com.meturial.domain.recipe.exception.ChoiceRecipeNotFoundException;
 import com.meturial.domain.recipe.facade.ChoiceRecipeFacade;
 import com.meturial.domain.recipe.facade.RecipeFacade;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -24,9 +26,9 @@ public class ChoiceRecipeService {
 
     public void addChoice(UUID recipeId) {
         User user = securityFacade.getCurrentUser();
-        Recipe recipe = recipeFacade.findRecipe(recipeId);
+        Recipe recipe = recipeFacade.findByRecipeId(recipeId);
 
-        if (choiceRecipeFacade.findExistedChoiceRecipe(user, recipe)) {
+        if (choiceRecipeFacade.checkExistChoiceRecipe(user, recipe)) {
             throw ChoiceRecipeExistException.EXCEPTION;
         }
 
@@ -34,5 +36,15 @@ public class ChoiceRecipeService {
                 .user(user)
                 .recipe(recipe)
                 .build());
+    }
+
+    @Transactional
+    public void deleteChoice(UUID choiceRecipeId) {
+        ChoiceRecipe choiceRecipe = choiceRecipeRepository.findById(choiceRecipeId)
+                .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
+
+        choiceRecipe.checkChoiceRecipeIsMine(securityFacade.getCurrentUserId());
+
+        choiceRecipeRepository.delete(choiceRecipe);
     }
 }
