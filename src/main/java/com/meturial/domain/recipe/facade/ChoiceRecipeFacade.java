@@ -6,13 +6,15 @@ import com.meturial.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Component
 public class ChoiceRecipeFacade {
 
     private final ChoiceRecipeRepository choiceRecipeRepository;
 
-    public boolean findExistedChoiceRecipe(User user, Recipe recipe) {
+    public boolean checkExistChoiceRecipe(User user, Recipe recipe) {
         return choiceRecipeRepository.existsByUserAndRecipe(user, recipe);
     }
 }
