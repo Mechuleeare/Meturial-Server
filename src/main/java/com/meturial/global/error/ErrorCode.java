@@ -15,8 +15,11 @@ public enum ErrorCode {
     CODE_NOT_CORRECT(401, "Code Not Correct"),
     UN_AUTHORIZED(401, "Un Authorized"),
 
+    CHOICE_RECIPE_IS_NOT_MINE(403, "Choice Recipe Is Not Mine"),
+
     USER_NOT_FOUND(404, "User Not Found"),
     RECIPE_NOT_FOUND(404, "Recipe Not Found"),
+    CHOICE_RECIPE_NOT_FOUND(404, "Choice Recipe Not Found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
 
     USER_EXIST(409, "User Exist"),

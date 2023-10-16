@@ -1,5 +1,6 @@
 package com.meturial.domain.recipe.domain;
 
+import com.meturial.domain.recipe.exception.ChoiceRecipeIsNotMineException;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.entity.BaseUUIDEntity;
 import jakarta.persistence.Entity;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,4 +31,10 @@ public class ChoiceRecipe extends BaseUUIDEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "recipe_id", nullable = false)
     private Recipe recipe;
+
+    public void checkChoiceRecipeIsMine(UUID userId) {
+        if (!userId.equals(this.user.getId())) {
+            throw ChoiceRecipeIsNotMineException.EXCEPTION;
+        }
+    }
 }
