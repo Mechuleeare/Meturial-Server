@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(404, "User Not Found"),
     RECIPE_NOT_FOUND(404, "Recipe Not Found"),
+    RECIPE_SEQUENCE_NOT_FOUND(404, "Recipe Sequence Not Found"),
     CHOICE_RECIPE_NOT_FOUND(404, "Choice Recipe Not Found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
 
