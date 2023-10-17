@@ -40,4 +40,4 @@ out/
 
 src/main/resources/firebase/fcm.json
 
-src/main/generated/com/meturial/domain/menu/domain/
+src/main/generated/com/meturial/domain/menu/domain
