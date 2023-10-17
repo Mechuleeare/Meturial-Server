@@ -29,4 +29,7 @@ public class Recipe extends BaseUUIDEntity {
 
     @Column(columnDefinition = "VARCHAR(255)", nullable = false)
     private String tip;
+
+    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
+    private String category;
 }
