@@ -39,3 +39,6 @@ out/
 .DS_Store
 
 src/main/resources/firebase/fcm.json
+
+src/main/generated/com/meturial/domain/
+src/main/generated/com/meturial/global/
