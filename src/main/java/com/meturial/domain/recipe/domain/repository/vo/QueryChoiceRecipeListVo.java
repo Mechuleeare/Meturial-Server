@@ -7,19 +7,12 @@ import java.util.UUID;
 
 @Getter
 public class QueryChoiceRecipeListVo {
-
     private final UUID choiceId;
-
     private final UUID recipeId;
-
     private final String name;
-
     private final Float starRating;
-
     private final Long starCount;
-
     private final String recipeImageUrl;
-
     private final String recipeCategory;
 
     @QueryProjection
