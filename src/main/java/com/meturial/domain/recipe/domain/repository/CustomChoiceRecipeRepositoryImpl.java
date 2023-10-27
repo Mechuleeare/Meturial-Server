@@ -15,7 +15,7 @@ import static com.meturial.domain.review.domain.QReview.review;
 
 @RequiredArgsConstructor
 @Component
-public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepository{
+public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -32,7 +32,7 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                                 recipe.category
                         ))
                 .from(choiceRecipe)
-                .leftJoin(recipe)
+                .innerJoin(recipe)
                 .on(choiceRecipe.recipe.id.eq(recipe.id))
                 .leftJoin(review)
                 .on(choiceRecipe.recipe.id.eq(review.recipe.id))
