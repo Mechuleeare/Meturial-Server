@@ -51,7 +51,7 @@ public class ChoiceRecipeService {
         choiceRecipeRepository.delete(choiceRecipe);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
         UUID userId = securityFacade.getCurrentUserId();
 
