@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class QueryRecipeRankingList {
+public class QueryRecipeRankingListResponse {
     private final List<RecipeRankingElement> recipeRankingList;
 }

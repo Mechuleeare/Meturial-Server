@@ -7,7 +7,7 @@ import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
-import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingList;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
 import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
 import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
@@ -64,7 +64,7 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public QueryRecipeRankingList queryRecipeRankingList(String type) {
+    public QueryRecipeRankingListResponse queryRecipeRankingList(String type) {
         List<QueryRecipeRankingVo> recipeRankingVo = switch (type) {
             case STAR_RATING -> recipeRepository.queryRecipeRankingListOrderByStarRating();
             case STAR_COUNT -> recipeRepository.queryRecipeRankingListOrderByStarCount();
@@ -76,7 +76,7 @@ public class RecipeService {
                 .map(this::buildRecipeRankingElement)
                 .toList();
 
-        return new QueryRecipeRankingList(recipeRankingElements);
+        return new QueryRecipeRankingListResponse(recipeRankingElements);
     }
 
     private RecipeRankingElement buildRecipeRankingElement(QueryRecipeRankingVo recipeRankingVo) {

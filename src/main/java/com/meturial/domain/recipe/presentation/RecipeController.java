@@ -1,7 +1,7 @@
 package com.meturial.domain.recipe.presentation;
 
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
-import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingList;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
 import com.meturial.domain.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class RecipeController {
     }
 
     @GetMapping("/ranking")
-    public QueryRecipeRankingList queryRecipeRankingList(@RequestParam("type") String type) {
+    public QueryRecipeRankingListResponse queryRecipeRankingList(@RequestParam("type") String type) {
         return recipeService.queryRecipeRankingList(type);
     }
 }
