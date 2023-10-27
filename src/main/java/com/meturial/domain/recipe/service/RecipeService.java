@@ -84,7 +84,7 @@ public class RecipeService {
                 .recipeId(recipeRankingVo.getRecipeId())
                 .name(recipeRankingVo.getName())
                 .starRating(recipeRankingVo.getStarRating())
-                .starCount(recipeRankingVo.getStarCount().intValue())
+                .starCount(recipeRankingVo.getStarCount())
                 .recipeImageUrl(recipeRankingVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeRankingVo.getRecipeCategory().split(",")))
                 .recipeMaterial(List.of(recipeRankingVo.getRecipeMaterial().split(",")))
