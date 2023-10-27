@@ -28,7 +28,7 @@ public class ChoiceRecipeController {
         choiceRecipeService.deleteChoice(choiceRecipeId);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
         return choiceRecipeService.queryChoiceRecipeList();
     }
