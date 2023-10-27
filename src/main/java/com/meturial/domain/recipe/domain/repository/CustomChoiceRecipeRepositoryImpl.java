@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,8 +21,8 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<QueryChoiceRecipeListVo> queryChoiceRecipeList(UUID userId) {
-        return Optional.ofNullable((QueryChoiceRecipeListVo) queryFactory.select(
+    public Optional<List<QueryChoiceRecipeListVo>> queryChoiceRecipeList(UUID userId) {
+        return Optional.ofNullable(queryFactory.select(
                         new QQueryChoiceRecipeListVo(
                                 choiceRecipe.id,
                                 choiceRecipe.recipe.id,
