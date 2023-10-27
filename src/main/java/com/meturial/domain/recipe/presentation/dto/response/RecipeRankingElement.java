@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class QueryRecipeDetailResponse {
+public class RecipeRankingElement {
     private final UUID recipeId;
     private final String name;
     private final Float starRating;
@@ -16,6 +16,4 @@ public class QueryRecipeDetailResponse {
     private final String recipeImageUrl;
     private final List<String> recipeCategory;
     private final List<String> recipeMaterial;
-    private final String recipeTip;
-    private final List<RecipeSequenceElement> recipeSequence;
 }
