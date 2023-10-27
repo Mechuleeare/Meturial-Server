@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.meturial.domain.recipe.domain.QChoiceRecipe.choiceRecipe;
@@ -21,8 +20,8 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<List<QueryChoiceRecipeListVo>> queryChoiceRecipeList(UUID userId) {
-        return Optional.ofNullable(queryFactory.select(
+    public List<QueryChoiceRecipeListVo> queryChoiceRecipeList(UUID userId) {
+        return queryFactory.select(
                         new QQueryChoiceRecipeListVo(
                                 choiceRecipe.id,
                                 choiceRecipe.recipe.id,
@@ -39,6 +38,6 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                 .on(choiceRecipe.recipe.id.eq(review.recipe.id))
                 .where(choiceRecipe.user.id.eq(userId))
                 .orderBy(choiceRecipe.id.asc())
-                .fetch());
+                .fetch();
     }
 }

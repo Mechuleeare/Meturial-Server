@@ -55,17 +55,8 @@ public class ChoiceRecipeService {
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
         UUID userId = securityFacade.getCurrentUserId();
 
-        QueryChoiceRecipeListVo choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeList(userId)
-                .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
+        List<QueryChoiceRecipeListVo> choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeList(userId);
 
-        return QueryChoiceRecipeListResponse.builder()
-                .choiceId(choiceRecipeList.getChoiceId())
-                .recipeId(choiceRecipeList.getRecipeId())
-                .name(choiceRecipeList.getName())
-                .starRating(choiceRecipeList.getStarRating())
-                .starCount(choiceRecipeList.getStarCount())
-                .recipeImageUrl(choiceRecipeList.getRecipeImageUrl())
-                .recipeCategory(List.of(choiceRecipeList.getRecipeCategory().split(",")))
-                .build();
+        return new QueryChoiceRecipeListResponse(choiceRecipeList);
     }
 }
