@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.meturial.domain.recipe.domain.QRecipeSequence.recipeSequence;
@@ -18,10 +17,10 @@ public class CustomRecipeSequenceRepositoryImpl implements CustomRecipeSequenceR
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<List<RecipeSequence>> queryRecipeSequenceListByRecipeId(UUID recipeId) {
-        return Optional.ofNullable(queryFactory
+    public List<RecipeSequence> queryRecipeSequenceListByRecipeId(UUID recipeId) {
+        return queryFactory
                 .selectFrom(recipeSequence)
                 .where(recipeSequence.recipe.id.eq(recipeId))
-                .fetch());
+                .fetch();
     }
 }
