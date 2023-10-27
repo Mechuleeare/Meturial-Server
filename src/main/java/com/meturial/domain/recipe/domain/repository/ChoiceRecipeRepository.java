@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface ChoiceRecipeRepository extends CrudRepository<ChoiceRecipe, UUID> {
+public interface ChoiceRecipeRepository extends CrudRepository<ChoiceRecipe, UUID>, CustomChoiceRecipeRepository {
 
     boolean existsByUserAndRecipe(User user, Recipe recipe);
 }
