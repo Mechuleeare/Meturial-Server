@@ -49,7 +49,6 @@ public class RecipeService {
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().split(",")))
                 .recipeMaterial(List.of(recipeDetailVo.getRecipeMaterial().split(",")))
-                .recipeTip(recipeDetailVo.getRecipeTip())
                 .recipeSequence(recipeSequenceList)
                 .build();
     }
