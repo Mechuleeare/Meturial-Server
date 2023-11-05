@@ -30,7 +30,6 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 recipe.foodImageUrl,
                                 recipe.category,
                                 recipe.material,
-                                recipe.tip,
                                 review.starRating
                         ))
                 .from(recipe)
