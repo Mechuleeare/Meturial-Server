@@ -1,6 +1,7 @@
 package com.meturial.domain.review.domain;
 
 import com.meturial.domain.recipe.domain.Recipe;
+import com.meturial.domain.review.exception.ReviewIsNotMineException;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.entity.BaseUUIDEntity;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,4 +46,10 @@ public class Review extends BaseUUIDEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "user_id", nullable = false)
     private User user;
+
+    public void checkReviewIsMine(UUID userId) {
+        if (!userId.equals(this.user.getId())) {
+            throw ReviewIsNotMineException.EXCEPTION;
+        }
+    }
 }

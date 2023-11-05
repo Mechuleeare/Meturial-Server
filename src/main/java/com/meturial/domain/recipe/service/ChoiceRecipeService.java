@@ -54,7 +54,6 @@ public class ChoiceRecipeService {
     @Transactional(readOnly = true)
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
         UUID userId = securityFacade.getCurrentUserId();
-
         List<QueryChoiceRecipeListVo> choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeList(userId);
 
         return new QueryChoiceRecipeListResponse(choiceRecipeList);
