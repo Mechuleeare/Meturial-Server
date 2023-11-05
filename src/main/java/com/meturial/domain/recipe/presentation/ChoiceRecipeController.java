@@ -2,7 +2,6 @@ package com.meturial.domain.recipe.presentation;
 
 import com.meturial.domain.recipe.presentation.dto.response.QueryChoiceRecipeListResponse;
 import com.meturial.domain.recipe.service.ChoiceRecipeService;
-import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
