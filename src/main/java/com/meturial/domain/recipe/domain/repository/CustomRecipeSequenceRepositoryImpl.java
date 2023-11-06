@@ -21,6 +21,7 @@ public class CustomRecipeSequenceRepositoryImpl implements CustomRecipeSequenceR
         return queryFactory
                 .selectFrom(recipeSequence)
                 .where(recipeSequence.recipe.id.eq(recipeId))
+                .orderBy(recipeSequence.sequence.asc())
                 .fetch();
     }
 }
