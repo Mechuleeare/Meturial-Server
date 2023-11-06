@@ -33,7 +33,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 review.starRating
                         ))
                 .from(recipe)
-                .innerJoin(review)
+                .leftJoin(review)
                 .on(recipe.id.eq(review.recipe.id))
                 .where(recipe.id.eq(recipeId))
                 .fetchOne());
