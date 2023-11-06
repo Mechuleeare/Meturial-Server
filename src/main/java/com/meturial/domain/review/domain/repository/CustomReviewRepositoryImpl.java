@@ -14,7 +14,7 @@ import static com.meturial.domain.review.domain.QReview.review;
 
 @RequiredArgsConstructor
 @Component
-public class CustomReviewRepositoryImpl implements CustomReviewRepository{
+public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -31,7 +31,7 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository{
                                 review.createdAt
                         ))
                 .from(review)
-                .leftJoin(recipe)
+                .innerJoin(recipe)
                 .on(review.recipe.id.eq(recipe.id))
                 .where(review.id.eq(reviewId))
                 .fetchOne());
