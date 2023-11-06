@@ -47,8 +47,8 @@ public class RecipeService {
                 .starRating(recipeDetailVo.getStarRating())
                 .starCount(reviewRepository.countByRecipeId(recipeId))
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
-                .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().split(",")))
-                .recipeMaterial(List.of(recipeDetailVo.getRecipeMaterial().split(",")))
+                .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
+                .recipeMaterial(List.of(recipeDetailVo.getRecipeMaterial().replace(" ", "").split(",")))
                 .recipeSequence(recipeSequenceList)
                 .build();
     }
@@ -85,8 +85,8 @@ public class RecipeService {
                 .starRating(recipeRankingVo.getStarRating())
                 .starCount(recipeRankingVo.getStarCount())
                 .recipeImageUrl(recipeRankingVo.getRecipeImageUrl())
-                .recipeCategory(List.of(recipeRankingVo.getRecipeCategory().split(",")))
-                .recipeMaterial(List.of(recipeRankingVo.getRecipeMaterial().split(",")))
+                .recipeCategory(List.of(recipeRankingVo.getRecipeCategory().replace(" ", "").split(",")))
+                .recipeMaterial(List.of(recipeRankingVo.getRecipeMaterial().replace(" ", "").split(",")))
                 .build();
     }
 }
