@@ -52,4 +52,8 @@ public class Review extends BaseUUIDEntity {
             throw ReviewIsNotMineException.EXCEPTION;
         }
     }
+
+    public String getReviewWriterName() {
+        return this.user.getName();
+    }
 }
