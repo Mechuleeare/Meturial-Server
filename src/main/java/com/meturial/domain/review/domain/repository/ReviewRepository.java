@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface ReviewRepository extends CrudRepository<Review, UUID> {
+public interface ReviewRepository extends CrudRepository<Review, UUID>, CustomReviewRepository {
     Long countByRecipeId(UUID recipeId);
 
     boolean existsByUserAndRecipe(User user, Recipe recipe);
