@@ -5,9 +5,11 @@ import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
 import com.meturial.domain.review.domain.Review;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
+import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +55,21 @@ public class ReviewService {
         review.checkReviewIsMine(securityFacade.getCurrentUserId());
 
         reviewRepository.delete(review);
+    }
+
+    @Transactional(readOnly = true)
+    public QueryReviewDetailResponse queryReviewDetail(UUID reviewId) {
+        QueryReviewDetailVo reviewDetailVo = reviewRepository.queryReviewDetail(reviewId)
+                .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
+
+        return QueryReviewDetailResponse.builder()
+                .recipeId(reviewDetailVo.getRecipeId())
+                .recipeName(reviewDetailVo.getRecipeName())
+                .writerName(reviewDetailVo.getWriterName())
+                .starRating(reviewDetailVo.getStarRating())
+                .content(reviewDetailVo.getContent())
+                .reviewImageUrl(reviewDetailVo.getReviewImageUrl())
+                .createdAt(reviewDetailVo.getCreatedAt())
+                .build();
     }
 }

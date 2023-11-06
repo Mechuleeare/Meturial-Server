@@ -1,6 +1,7 @@
 package com.meturial.domain.review.presentation;
 
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.review.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class ReviewController {
     @DeleteMapping("/{review-id}")
     public void deleteReview(@PathVariable("review-id") UUID reviewId) {
         reviewService.deleteReview(reviewId);
+    }
+
+    @GetMapping("/{review-id}")
+    public QueryReviewDetailResponse queryReviewDetail(@PathVariable("review-id") UUID reviewId) {
+        return reviewService.queryReviewDetail(reviewId);
     }
 }
