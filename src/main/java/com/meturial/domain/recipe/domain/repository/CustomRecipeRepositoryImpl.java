@@ -33,7 +33,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 review.starRating
                         ))
                 .from(recipe)
-                .innerJoin(review)
+                .leftJoin(review)
                 .on(recipe.id.eq(review.recipe.id))
                 .where(recipe.id.eq(recipeId))
                 .fetchOne());
@@ -52,7 +52,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 recipe.material
                         ))
                 .from(recipe)
-                .innerJoin(review)
+                .leftJoin(review)
                 .on(recipe.id.eq(review.recipe.id))
                 .orderBy(review.starRating.desc())
                 .fetch();
@@ -71,7 +71,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 recipe.material
                         ))
                 .from(recipe)
-                .innerJoin(review)
+                .leftJoin(review)
                 .on(recipe.id.eq(review.recipe.id))
                 .orderBy(review.recipe.id.count().desc())
                 .fetch();

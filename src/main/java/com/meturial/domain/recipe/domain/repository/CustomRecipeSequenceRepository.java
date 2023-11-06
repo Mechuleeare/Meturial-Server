@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface CustomRecipeSequenceRepository {
 
-    public List<RecipeSequence> queryRecipeSequenceListByRecipeId(UUID recipeId);
+    List<RecipeSequence> queryRecipeSequenceListByRecipeId(UUID recipeId);
 }
