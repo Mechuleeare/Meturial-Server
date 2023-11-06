@@ -25,7 +25,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final SecurityFacade securityFacade;
 
-    @Transactional
     public void createReview(UUID recipeId, CreateReviewRequest request) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
