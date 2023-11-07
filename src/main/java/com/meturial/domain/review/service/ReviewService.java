@@ -10,6 +10,8 @@ import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
+import com.meturial.domain.review.presentation.dto.response.ReviewElement;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -55,6 +58,32 @@ public class ReviewService {
         review.checkReviewIsMine(securityFacade.getCurrentUserId());
 
         reviewRepository.delete(review);
+    }
+
+    @Transactional(readOnly = true)
+    public QueryReviewListResponse queryReviewListByRecipeId(UUID recipeId) {
+        List<Review> reviewList = reviewRepository.queryReviewListByRecipeId(recipeId);
+        List<ReviewElement> reviewElements = reviewList
+                .stream()
+                .map(this::buildReviewElement)
+                .toList();
+
+        return new QueryReviewListResponse(
+                reviewList.size(),
+                reviewList.stream().map(Review::getReviewRecipeName).findFirst().toString(),
+                reviewElements
+        );
+    }
+
+    private ReviewElement buildReviewElement(Review review) {
+        return ReviewElement.builder()
+                .reviewId(review.getId())
+                .writerName(review.getReviewWriterName())
+                .starRating(review.getStarRating())
+                .reviewImageUrl(review.getReviewImageUrl())
+                .content(review.getContent())
+                .createdAt(review.getCreatedAt())
+                .build();
     }
 
     @Transactional(readOnly = true)
