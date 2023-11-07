@@ -9,9 +9,7 @@ import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
-import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
-import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
-import com.meturial.domain.review.presentation.dto.response.ReviewElement;
+import com.meturial.domain.review.presentation.dto.response.*;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +80,33 @@ public class ReviewService {
                 .starRating(review.getStarRating())
                 .reviewImageUrl(review.getReviewImageUrl())
                 .content(review.getContent())
+                .createdAt(review.getCreatedAt())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public QueryMyReviewListResponse queryMyReviewList() {
+        UUID userId = securityFacade.getCurrentUserId();
+
+        List<Review> myReviewList = reviewRepository.queryMyReviewList(userId);
+        List<MyReviewElement> myReviewElements = myReviewList
+                .stream()
+                .map(this::buildMyReviewElement)
+                .toList();
+
+        return new QueryMyReviewListResponse(
+                myReviewList.size(),
+                myReviewElements
+        );
+    }
+
+    private MyReviewElement buildMyReviewElement(Review review) {
+        return MyReviewElement.builder()
+                .reviewId(review.getId())
+                .recipeName(review.getReviewRecipeName())
+                .starRating(review.getStarRating())
+                .content(review.getContent())
+                .reviewImageUrl(review.getReviewImageUrl())
                 .createdAt(review.getCreatedAt())
                 .build();
     }
