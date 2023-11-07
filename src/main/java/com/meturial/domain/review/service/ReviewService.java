@@ -68,7 +68,7 @@ public class ReviewService {
 
         return new QueryReviewListResponse(
                 reviewList.size(),
-                reviewList.stream().map(Review::getReviewRecipeName).toString(),
+                reviewList.stream().map(Review::getReviewRecipeName).findFirst().toString(),
                 reviewElements
         );
     }
