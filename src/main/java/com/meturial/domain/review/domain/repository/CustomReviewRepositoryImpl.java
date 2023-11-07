@@ -32,6 +32,17 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
     }
 
     @Override
+    public List<Review> queryMyReviewList(UUID userId) {
+        return queryFactory
+                .selectFrom(review)
+                .innerJoin(recipe)
+                .on(review.recipe.id.eq(recipe.id))
+                .where(review.user.id.eq(userId))
+                .orderBy(review.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
     public Optional<QueryReviewDetailVo> queryReviewDetail(UUID reviewId) {
         return Optional.ofNullable(queryFactory.select(
                         new QQueryReviewDetailVo(
