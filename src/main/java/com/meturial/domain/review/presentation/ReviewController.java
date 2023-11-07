@@ -1,6 +1,7 @@
 package com.meturial.domain.review.presentation;
 
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
+import com.meturial.domain.review.presentation.dto.response.QueryMyReviewListResponse;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
 import com.meturial.domain.review.service.ReviewService;
@@ -38,9 +39,14 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
     }
 
-    @GetMapping("/{recipe-id}")
+    @GetMapping("/recipe/{recipe-id}")
     public QueryReviewListResponse queryReviewListByRecipeId(@PathVariable("recipe-id") UUID recipeId) {
         return reviewService.queryReviewListByRecipeId(recipeId);
+    }
+
+    @GetMapping
+    public QueryMyReviewListResponse queryMyReviewList() {
+        return reviewService.queryMyReviewList();
     }
 
     @GetMapping("/{review-id}")
