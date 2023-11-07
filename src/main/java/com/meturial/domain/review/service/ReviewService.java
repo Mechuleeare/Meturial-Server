@@ -66,7 +66,11 @@ public class ReviewService {
                 .map(this::buildReviewElement)
                 .toList();
 
-        return new QueryReviewListResponse(reviewList.size(), reviewElements);
+        return new QueryReviewListResponse(
+                reviewList.size(),
+                reviewList.stream().map(Review::getReviewRecipeName).toString(),
+                reviewElements
+        );
     }
 
     private ReviewElement buildReviewElement(Review review) {

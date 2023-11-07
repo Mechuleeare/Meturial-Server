@@ -56,4 +56,8 @@ public class Review extends BaseUUIDEntity {
     public String getReviewWriterName() {
         return this.user.getName();
     }
+
+    public String getReviewRecipeName() {
+        return this.recipe.getName();
+    }
 }

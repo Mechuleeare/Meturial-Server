@@ -9,5 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 public class QueryReviewListResponse {
     private final Integer recipeReviewCount;
+    private final String recipeName;
     private final List<ReviewElement> recipeReviewList;
 }
