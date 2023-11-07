@@ -9,9 +9,9 @@ import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
 import com.meturial.domain.review.presentation.dto.response.ReviewElement;
-import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +83,8 @@ public class ReviewService {
                 .reviewImageUrl(review.getReviewImageUrl())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public QueryReviewDetailResponse queryReviewDetail(UUID reviewId) {

@@ -6,6 +6,7 @@ import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                 .where(recipe.id.eq(recipeId))
                 .orderBy(review.createdAt.desc())
                 .fetch();
+    }
 
     @Override
     public Optional<QueryReviewDetailVo> queryReviewDetail(UUID reviewId) {
