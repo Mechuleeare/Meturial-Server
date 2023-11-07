@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface CustomReviewRepository {
 
     List<Review> queryReviewListByRecipeId(UUID recipeId);
+  
+    Optional<QueryReviewDetailVo> queryReviewDetail(UUID reviewId);
 }
