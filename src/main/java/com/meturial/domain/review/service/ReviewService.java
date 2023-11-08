@@ -9,7 +9,12 @@ import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
-import com.meturial.domain.review.presentation.dto.response.*;
+import com.meturial.domain.review.presentation.dto.request.UpdateReviewRequest;
+import com.meturial.domain.review.presentation.dto.response.MyReviewElement;
+import com.meturial.domain.review.presentation.dto.response.QueryMyReviewListResponse;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
+import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
+import com.meturial.domain.review.presentation.dto.response.ReviewElement;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
@@ -125,5 +130,18 @@ public class ReviewService {
                 .reviewImageUrl(reviewDetailVo.getReviewImageUrl())
                 .createdAt(reviewDetailVo.getCreatedAt())
                 .build();
+    }
+
+    @Transactional
+    public void updateReview(UUID reviewId, UpdateReviewRequest request) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
+
+        review.checkReviewIsMine(securityFacade.getCurrentUserId());
+        review.updateReview(
+                request.getStarRating(),
+                request.getContent(),
+                request.getReviewImageUrl()
+        );
     }
 }
