@@ -1,6 +1,7 @@
 package com.meturial.domain.review.presentation;
 
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
+import com.meturial.domain.review.presentation.dto.request.UpdateReviewRequest;
 import com.meturial.domain.review.presentation.dto.response.QueryMyReviewListResponse;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewDetailResponse;
 import com.meturial.domain.review.presentation.dto.response.QueryReviewListResponse;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,12 +41,12 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
     }
 
-    @GetMapping("/recipe/{recipe-id}")
+    @GetMapping("/list/{recipe-id}")
     public QueryReviewListResponse queryReviewListByRecipeId(@PathVariable("recipe-id") UUID recipeId) {
         return reviewService.queryReviewListByRecipeId(recipeId);
     }
 
-    @GetMapping
+    @GetMapping("/my")
     public QueryMyReviewListResponse queryMyReviewList() {
         return reviewService.queryMyReviewList();
     }
@@ -52,5 +54,12 @@ public class ReviewController {
     @GetMapping("/{review-id}")
     public QueryReviewDetailResponse queryReviewDetail(@PathVariable("review-id") UUID reviewId) {
         return reviewService.queryReviewDetail(reviewId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping("/{review-id}")
+    public void updateReview(@PathVariable("review-id") UUID reviewId,
+                             @RequestBody @Valid UpdateReviewRequest request) {
+        reviewService.updateReview(reviewId, request);
     }
 }
