@@ -53,6 +53,12 @@ public class Review extends BaseUUIDEntity {
         }
     }
 
+    public void updateReview(Float starRating, String content, String reviewImageUrl) {
+        this.starRating = starRating;
+        this.content = content;
+        this.reviewImageUrl = reviewImageUrl;
+    }
+
     public String getReviewWriterName() {
         return this.user.getName();
     }
