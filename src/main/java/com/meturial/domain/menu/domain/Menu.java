@@ -2,6 +2,7 @@ package com.meturial.domain.menu.domain;
 
 import com.meturial.domain.menu.domain.type.MenuType;
 import com.meturial.domain.recipe.domain.ChoiceRecipe;
+import com.meturial.domain.user.domain.User;
 import com.meturial.global.entity.BaseUUIDEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -40,4 +42,8 @@ public class Menu extends BaseUUIDEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "choice_recipe_id", nullable = false)
     private ChoiceRecipe choiceRecipe;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(columnDefinition = "BINARY(16)", name = "user_id", nullable = false)
+    private User user;
 }
