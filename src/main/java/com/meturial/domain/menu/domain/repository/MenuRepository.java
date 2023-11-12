@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface MenuRepository extends CrudRepository<Menu, UUID> {
+public interface MenuRepository extends CrudRepository<Menu, UUID>, CustomMenuRepository {
 }
