@@ -19,17 +19,20 @@ public enum ErrorCode {
 
     CHOICE_RECIPE_IS_NOT_MINE(403, "Choice Recipe Is Not Mine"),
     REVIEW_IS_NOT_MINE(403, "Review Is Not Mine"),
+    MENU_IS_NOT_MINE(403, "Menu Is Not Mine"),
 
     USER_NOT_FOUND(404, "User Not Found"),
     RECIPE_NOT_FOUND(404, "Recipe Not Found"),
     RECIPE_SEQUENCE_NOT_FOUND(404, "Recipe Sequence Not Found"),
     CHOICE_RECIPE_NOT_FOUND(404, "Choice Recipe Not Found"),
     REVIEW_NOT_FOUND(404, "Review Not Found"),
+    MENU_NOT_FOUND(404, "Menu Not Found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
 
     USER_EXIST(409, "User Exist"),
     REVIEW_EXIST(409, "Review Exist"),
     CHOICE_RECIPE_EXIST(409, "Choice Recipe Exist"),
+    MENU_EXIST(409, "Menu Exist"),
 
     SEND_MESSAGE_FAILED(500, "Send Message Failed"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");
