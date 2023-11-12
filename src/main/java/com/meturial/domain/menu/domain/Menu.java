@@ -1,6 +1,8 @@
 package com.meturial.domain.menu.domain;
 
 import com.meturial.domain.menu.domain.type.MenuType;
+import com.meturial.domain.menu.exception.MenuExistException;
+import com.meturial.domain.menu.exception.MenuIsNotMineException;
 import com.meturial.domain.recipe.domain.ChoiceRecipe;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.entity.BaseUUIDEntity;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,4 +49,23 @@ public class Menu extends BaseUUIDEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "user_id", nullable = false)
     private User user;
+
+    public void checkMenuIsMine(UUID userId) {
+        if (!this.user.getId().equals(userId)) {
+            throw MenuIsNotMineException.EXCEPTION;
+        }
+    }
+
+    public void checkExistSameDateAndMenuType(LocalDate date, MenuType menuType) {
+        boolean isExistSameDateAndMenuType = this.date.equals(date) && this.menuType.equals(menuType);
+        if (isExistSameDateAndMenuType) {
+            throw MenuExistException.EXCEPTION;
+        }
+    }
+
+    public void updateMenu(LocalDate date, MenuType menuType, ChoiceRecipe choiceRecipe) {
+        this.date = date;
+        this.menuType = menuType;
+        this.choiceRecipe = choiceRecipe;
+    }
 }
