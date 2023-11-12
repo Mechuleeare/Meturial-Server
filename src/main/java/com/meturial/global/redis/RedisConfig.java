@@ -24,11 +24,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisConfiguration = new RedisStandaloneConfiguration(host, port);
-
-        boolean isNotBlankPassword = !password.isBlank();
-        if (isNotBlankPassword) {
-            redisConfiguration.setPassword(password);
-        }
+        redisConfiguration.setPassword(password);
 
         return new LettuceConnectionFactory(redisConfiguration);
     }
