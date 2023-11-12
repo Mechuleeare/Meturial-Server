@@ -1,6 +1,6 @@
 package com.meturial.domain.notification.presentation;
 
-import com.meturial.domain.notification.presentation.dto.response.QueryNotificationSettingList;
+import com.meturial.domain.notification.presentation.dto.response.QueryNotificationSettingListResponse;
 import com.meturial.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    public QueryNotificationSettingList queryNotificationSettingListByDate(@RequestParam("date") LocalDate date) {
+    public QueryNotificationSettingListResponse queryNotificationSettingListByDate(@RequestParam("date") LocalDate date) {
         return notificationService.queryNotificationSettingListByDate(date);
     }
 }

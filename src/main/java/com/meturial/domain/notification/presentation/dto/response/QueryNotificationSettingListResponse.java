@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class QueryNotificationSettingList {
+public class QueryNotificationSettingListResponse {
     private final List<NotificationSettingElement> todayNotificationList;
 }
