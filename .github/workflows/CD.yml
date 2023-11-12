@@ -42,7 +42,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          port: ${{ secrets.SERVER_PORT }}
           script: |
             docker pull ${{ secrets.SERVER_NAME }}
             docker stop ${{ secrets.SERVER_NAME }}
