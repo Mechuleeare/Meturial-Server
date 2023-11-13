@@ -13,5 +13,6 @@ public class UpdateNotificationSettingRequest {
     @NotNull
     private UUID menuId;
 
+    @NotNull
     private Boolean isActivated;
 }
