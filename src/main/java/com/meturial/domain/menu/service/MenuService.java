@@ -7,15 +7,18 @@ import com.meturial.domain.menu.exception.MenuNotFoundException;
 import com.meturial.domain.menu.facade.MenuFacade;
 import com.meturial.domain.menu.presentation.dto.request.CreateMenuRequest;
 import com.meturial.domain.menu.presentation.dto.request.UpdateMenuRequest;
+import com.meturial.domain.menu.presentation.dto.response.MenuDetailElement;
+import com.meturial.domain.menu.presentation.dto.response.QueryMenuDetailResponse;
 import com.meturial.domain.recipe.domain.ChoiceRecipe;
 import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.exception.ChoiceRecipeNotFoundException;
-import com.meturial.domain.user.domain.User;
 import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -58,7 +61,8 @@ public class MenuService {
         menu.updateMenu(
                 request.getDate(),
                 request.getMenuType(),
-                choiceRecipe
+                choiceRecipe,
+                request.getIsActivated()
         );
     }
 
@@ -70,5 +74,29 @@ public class MenuService {
         menu.checkMenuIsMine(securityFacade.getCurrentUserId());
 
         menuRepository.delete(menu);
+    }
+
+    @Transactional(readOnly = true)
+    public QueryMenuDetailResponse queryMenuDetailByDate(LocalDate date) {
+        List<Menu> menuList = menuRepository.findAllByDateAndUserId(date, securityFacade.getCurrentUserId());
+        List<MenuDetailElement> menuDetailElements = menuList
+                .stream()
+                .map(this::buildMenuDetail)
+                .toList();
+
+        return new QueryMenuDetailResponse(
+                date,
+                menuDetailElements
+        );
+    }
+
+    private MenuDetailElement buildMenuDetail(Menu menu) {
+        return MenuDetailElement.builder()
+                .menuId(menu.getId())
+                .recipeId(menu.getChoiceRecipe().getId())
+                .recipeName(menu.getMenuRecipe().getName())
+                .menuType(menu.getMenuType())
+                .recipeImageUrl(menu.getMenuRecipe().getFoodImageUrl())
+                .build();
     }
 }
