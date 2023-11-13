@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface CustomMenuRepository {
     List<Menu> findAllByDateAndUserId(LocalDate date, UUID userId);
+
+    List<Menu> findAllByBetweenCurrentMonthAndNextMonthAndUserId(LocalDate targetDate, UUID userId);
 }

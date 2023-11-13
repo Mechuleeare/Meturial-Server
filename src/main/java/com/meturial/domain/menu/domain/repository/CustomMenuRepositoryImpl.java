@@ -30,4 +30,17 @@ public class CustomMenuRepositoryImpl implements CustomMenuRepository {
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Menu> findAllByBetweenCurrentMonthAndNextMonthAndUserId(LocalDate targetDate, UUID userId) {
+        return queryFactory
+                .selectFrom(menu)
+                .innerJoin(user)
+                .on(menu.user.id.eq(user.id))
+                .where(
+                        menu.date.between(targetDate, targetDate.plusMonths(1).minusDays(1)),
+                        menu.user.id.eq(userId)
+                )
+                .fetch();
+    }
 }
