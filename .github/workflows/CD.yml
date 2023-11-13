@@ -46,6 +46,9 @@ jobs:
           script: |
             docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin < ~/password.txt
             docker pull ${{ secrets.DOCKER_IMAGE }}
+            echo Hello World
             docker stop ${{ secrets.SERVER_NAME }}
+            echo Hello World
             docker rm ${{ secrets.SERVER_NAME }}
+            echo Hello World
             docker run -d --name ${{ secrets.SERVER_NAME }} -p 80:8080 --env-file .env ${{ secrets.DOCKER_USERNAME }}
