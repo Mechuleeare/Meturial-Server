@@ -2,12 +2,14 @@ package com.meturial.domain.menu.presentation;
 
 import com.meturial.domain.menu.presentation.dto.request.CreateMenuRequest;
 import com.meturial.domain.menu.presentation.dto.request.UpdateMenuRequest;
+import com.meturial.domain.menu.presentation.dto.response.QueryMenuDetailResponse;
 import com.meturial.domain.menu.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -34,5 +36,10 @@ public class MenuController {
     @DeleteMapping("/{menu-id}")
     public void deleteMenu(@PathVariable("menu-id") UUID menuId) {
         menuService.deleteMenu(menuId);
+    }
+
+    @GetMapping
+    public QueryMenuDetailResponse queryMenuDetailByDate(@RequestParam("date") LocalDate date) {
+        return menuService.queryMenuDetailByDate(date);
     }
 }

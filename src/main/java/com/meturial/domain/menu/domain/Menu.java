@@ -4,6 +4,7 @@ import com.meturial.domain.menu.domain.type.MenuType;
 import com.meturial.domain.menu.exception.MenuExistException;
 import com.meturial.domain.menu.exception.MenuIsNotMineException;
 import com.meturial.domain.recipe.domain.ChoiceRecipe;
+import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.user.domain.User;
 import com.meturial.global.entity.BaseUUIDEntity;
 import jakarta.persistence.Column;
@@ -62,10 +63,27 @@ public class Menu extends BaseUUIDEntity {
         }
     }
 
-    public void updateMenu(LocalDate date, MenuType menuType, ChoiceRecipe choiceRecipe) {
+    public void updateMenu(LocalDate date, MenuType menuType, ChoiceRecipe choiceRecipe, Boolean isActivated) {
         this.date = date;
         this.menuType = menuType;
         this.choiceRecipe = choiceRecipe;
+        this.isActivated = isActivated;
+    }
+
+    private Recipe getMenuRecipe() {
+        return this.choiceRecipe.getRecipe();
+    }
+
+    public UUID getMenuRecipeId() {
+        return this.getMenuRecipe().getId();
+    }
+
+    public String getMenuRecipeName() {
+        return this.getMenuRecipe().getName();
+    }
+
+    public String getMenuRecipeUrl() {
+        return this.getMenuRecipe().getFoodImageUrl();
     }
 
     public void updateMenuNotificationActivated(Boolean isActivated) {

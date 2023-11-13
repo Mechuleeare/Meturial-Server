@@ -91,9 +91,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public QueryMyReviewListResponse queryMyReviewList() {
-        UUID userId = securityFacade.getCurrentUserId();
-
-        List<Review> myReviewList = reviewRepository.queryMyReviewList(userId);
+        List<Review> myReviewList = reviewRepository.queryMyReviewList(securityFacade.getCurrentUserId());
         List<MyReviewElement> myReviewElements = myReviewList
                 .stream()
                 .map(this::buildMyReviewElement)
