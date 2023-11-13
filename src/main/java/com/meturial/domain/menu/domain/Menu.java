@@ -42,7 +42,7 @@ public class Menu extends BaseUUIDEntity {
     @Column(columnDefinition = "BIT(1) default 1", nullable = false)
     private Boolean isActivated;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", name = "choice_recipe_id", nullable = false)
     private ChoiceRecipe choiceRecipe;
 
