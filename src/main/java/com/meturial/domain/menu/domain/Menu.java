@@ -70,7 +70,19 @@ public class Menu extends BaseUUIDEntity {
         this.isActivated = isActivated;
     }
 
-    public Recipe getMenuRecipe() {
+    private Recipe getMenuRecipe() {
         return this.choiceRecipe.getRecipe();
+    }
+
+    public UUID getMenuRecipeId() {
+        return this.getMenuRecipe().getId();
+    }
+
+    public String getMenuRecipeName() {
+        return this.getMenuRecipe().getName();
+    }
+
+    public String getMenuRecipeUrl() {
+        return this.getMenuRecipe().getFoodImageUrl();
     }
 }

@@ -93,10 +93,10 @@ public class MenuService {
     private MenuDetailElement buildMenuDetail(Menu menu) {
         return MenuDetailElement.builder()
                 .menuId(menu.getId())
-                .recipeId(menu.getChoiceRecipe().getId())
-                .recipeName(menu.getMenuRecipe().getName())
+                .recipeId(menu.getMenuRecipeId())
+                .recipeName(menu.getMenuRecipeName())
                 .menuType(menu.getMenuType())
-                .recipeImageUrl(menu.getMenuRecipe().getFoodImageUrl())
+                .recipeImageUrl(menu.getMenuRecipeUrl())
                 .build();
     }
 }
