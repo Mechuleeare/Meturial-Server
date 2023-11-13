@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Component
 public class MenuFacade {
+
     private final MenuRepository menuRepository;
 
     public boolean checkExistMenu(LocalDate date, MenuType menuType) {
