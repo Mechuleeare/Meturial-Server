@@ -44,7 +44,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            docker login
+            ${{ secrets.DOCKER_LOGIN }}
             docker pull ${{ secrets.SERVER_NAME }}
             docker stop ${{ secrets.SERVER_NAME }}
             docker rm ${{ secrets.SERVER_NAME }}
