@@ -61,4 +61,14 @@ public class MenuService {
                 choiceRecipe
         );
     }
+
+    @Transactional
+    public void deleteMenu(UUID menuId) {
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> MenuNotFoundException.EXCEPTION);
+
+        menu.checkMenuIsMine(securityFacade.getCurrentUserId());
+
+        menuRepository.delete(menu);
+    }
 }
