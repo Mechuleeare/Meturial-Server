@@ -23,4 +23,7 @@ public class UpdateMenuRequest {
 
     @NotNull(message = "찜한 레시피 아이디를 입력하여 주세요.")
     private UUID choiceRecipeId;
+
+    @NotNull(message = "푸쉬 알람 설정 여부를 선택하여 주세요.")
+    private Boolean isActivated;
 }
