@@ -29,4 +29,10 @@ public class MenuController {
                            @RequestBody @Valid UpdateMenuRequest request) {
         menuService.updateMenu(menuId, request);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{menu-id}")
+    public void deleteMenu(@PathVariable("menu-id") UUID menuId) {
+        menuService.deleteMenu(menuId);
+    }
 }
