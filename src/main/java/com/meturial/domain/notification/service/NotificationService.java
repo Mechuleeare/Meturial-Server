@@ -2,6 +2,8 @@ package com.meturial.domain.notification.service;
 
 import com.meturial.domain.menu.domain.Menu;
 import com.meturial.domain.menu.domain.repository.MenuRepository;
+import com.meturial.domain.menu.exception.MenuNotFoundException;
+import com.meturial.domain.notification.presentation.dto.request.UpdateNotificationSettingRequest;
 import com.meturial.domain.notification.presentation.dto.response.NotificationSettingElement;
 import com.meturial.domain.notification.presentation.dto.response.QueryNotificationSettingListResponse;
 import com.meturial.global.security.SecurityFacade;
@@ -35,5 +37,14 @@ public class NotificationService {
                 menu.getMenuType().toString(),
                 menu.getIsActivated()
         );
+    }
+
+    @Transactional
+    public void updateNotificationSettingByDate(UpdateNotificationSettingRequest request) {
+        Menu menu = menuRepository.findById(request.getMenuId())
+                .orElseThrow(() -> MenuNotFoundException.EXCEPTION);
+
+        menu.checkMenuIsMine(securityFacade.getCurrentUserId());
+        menu.updateMenuNotificationActivated(request.getIsActivated());
     }
 }
