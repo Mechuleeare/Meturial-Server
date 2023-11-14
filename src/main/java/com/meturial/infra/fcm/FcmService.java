@@ -7,12 +7,14 @@ import com.meturial.domain.menu.domain.repository.MenuRepository;
 import com.meturial.domain.menu.domain.type.MenuType;
 import com.meturial.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FcmService {
@@ -39,6 +41,7 @@ public class FcmService {
                 .build();
 
         FirebaseMessaging.getInstance().sendMulticastAsync(multicastMessage);
+        log.info("success send" + menuType + "message");
     }
 
     private String getNotificationTitleByMenuType(MenuType menuType) {
