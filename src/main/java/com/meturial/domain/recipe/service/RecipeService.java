@@ -29,13 +29,12 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public QueryCategoryResponse queryCategory() {
-        List<Category> categoryList = recipeRepository.queryCategory();
-        List<CategoryElement> categoryElements = categoryList
+        List<CategoryElement> categoryList = recipeRepository.queryCategory()
                 .stream()
                 .map(this::buildCategoryElement)
                 .toList();
 
-        return new QueryCategoryResponse(categoryElements);
+        return new QueryCategoryResponse(categoryList);
     }
 
     private CategoryElement buildCategoryElement(Category category) {
