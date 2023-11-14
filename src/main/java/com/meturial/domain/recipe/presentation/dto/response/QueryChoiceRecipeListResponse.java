@@ -8,5 +8,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class QueryChoiceRecipeListResponse {
+    private final Integer choiceRecipeCount;
     private final List<QueryChoiceRecipeListVo> choiceRecipeList;
 }

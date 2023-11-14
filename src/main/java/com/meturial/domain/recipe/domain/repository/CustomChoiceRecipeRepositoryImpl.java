@@ -38,7 +38,7 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                 .on(choiceRecipe.recipe.id.eq(review.recipe.id))
                 .where(choiceRecipe.user.id.eq(userId))
                 .orderBy(choiceRecipe.id.asc())
-                .groupBy(review.recipe.id)
+                .groupBy(choiceRecipe.recipe.id)
                 .fetch();
     }
 }
