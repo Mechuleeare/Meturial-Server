@@ -1,15 +1,13 @@
 package com.meturial.domain.recipe.service;
 
+import com.meturial.domain.recipe.domain.Category;
 import com.meturial.domain.recipe.domain.RecipeSequence;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
-import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
-import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
-import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
-import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
+import com.meturial.domain.recipe.presentation.dto.response.*;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,24 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeSequenceRepository recipeSequenceRepository;
     private final ReviewRepository reviewRepository;
+
+    @Transactional(readOnly = true)
+    public QueryCategoryResponse queryCategory() {
+        List<Category> categoryList = recipeRepository.queryCategory();
+        List<CategoryElement> categoryElements = categoryList
+                .stream()
+                .map(this::buildCategoryElement)
+                .toList();
+
+        return new QueryCategoryResponse(categoryElements);
+    }
+
+    private CategoryElement buildCategoryElement(Category category) {
+        return CategoryElement.builder()
+                .categoryName(category.getName())
+                .categoryImageUrl(category.getCategoryImageUrl())
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public QueryRecipeDetailResponse queryRecipeDetailByRecipeId(UUID recipeId) {

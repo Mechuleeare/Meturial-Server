@@ -1,5 +1,6 @@
 package com.meturial.domain.recipe.presentation;
 
+import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
 import com.meturial.domain.recipe.service.RecipeService;
@@ -14,6 +15,11 @@ import java.util.UUID;
 public class RecipeController {
 
     private final RecipeService recipeService;
+
+    @GetMapping("/category")
+    public QueryCategoryResponse queryCategory() {
+        return recipeService.queryCategory();
+    }
 
     @GetMapping("/{recipe-id}")
     public QueryRecipeDetailResponse queryRecipeDetailByRecipeId(@PathVariable("recipe-id") UUID recipeId) {
