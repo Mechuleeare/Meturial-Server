@@ -54,7 +54,8 @@ public class CustomMenuRepositoryImpl implements CustomMenuRepository {
                 .on(menu.user.id.eq(user.id))
                 .where(
                         menu.menuType.eq(menuType),
-                        menu.date.eq(date)
+                        menu.date.eq(date),
+                        menu.isActivated.eq(true)
                 )
                 .fetch();
     }
