@@ -8,7 +8,9 @@ import com.meturial.domain.menu.facade.MenuFacade;
 import com.meturial.domain.menu.presentation.dto.request.CreateMenuRequest;
 import com.meturial.domain.menu.presentation.dto.request.UpdateMenuRequest;
 import com.meturial.domain.menu.presentation.dto.response.MenuDetailElement;
+import com.meturial.domain.menu.presentation.dto.response.MenuNotificationElement;
 import com.meturial.domain.menu.presentation.dto.response.QueryMenuDetailResponse;
+import com.meturial.domain.menu.presentation.dto.response.QueryMenuListResponse;
 import com.meturial.domain.recipe.domain.ChoiceRecipe;
 import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.exception.ChoiceRecipeNotFoundException;
@@ -19,7 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,7 +41,7 @@ public class MenuService {
         }
 
         ChoiceRecipe choiceRecipe = choiceRecipeRepository.findById(request.getChoiceRecipeId())
-                        .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
+                .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
 
         menuRepository.save(Menu.builder()
                 .date(request.getDate())
@@ -98,5 +103,29 @@ public class MenuService {
                 .menuType(menu.getMenuType())
                 .recipeImageUrl(menu.getMenuRecipeUrl())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public QueryMenuListResponse queryMenuListByYearAndMonth(Integer year, Integer month) {
+        LocalDate targetDate = LocalDate.of(year, month, 1);
+        List<Menu> menuList = menuRepository.findAllByBetweenCurrentMonthAndNextMonthAndUserId(
+                targetDate, securityFacade.getCurrentUserId()
+        );
+
+        Map<LocalDate, List<MenuNotificationElement>> menuNotificationMap = new TreeMap<>(
+                menuList.stream().collect(Collectors.groupingBy(
+                        Menu::getDate,
+                        Collectors.mapping(this::buildMenuNotificationElement, Collectors.toList())
+                ))
+        );
+
+        return new QueryMenuListResponse(menuNotificationMap);
+    }
+
+    private MenuNotificationElement buildMenuNotificationElement(Menu menu) {
+        return new MenuNotificationElement(
+                menu.getMenuType(),
+                menu.getIsActivated()
+        );
     }
 }
