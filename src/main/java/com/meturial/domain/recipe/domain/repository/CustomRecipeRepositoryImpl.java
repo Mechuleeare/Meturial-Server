@@ -1,5 +1,7 @@
 package com.meturial.domain.recipe.domain.repository;
 
+import com.meturial.domain.recipe.domain.Category;
+import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeRankingVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.meturial.domain.recipe.domain.QCategory.category;
 import static com.meturial.domain.recipe.domain.QRecipe.recipe;
 import static com.meturial.domain.review.domain.QReview.review;
 
@@ -20,6 +23,13 @@ import static com.meturial.domain.review.domain.QReview.review;
 public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List<Category> queryCategory() {
+        return queryFactory
+                .selectFrom(category)
+                .fetch();
+    }
 
     @Override
     public Optional<QueryRecipeDetailVo> queryRecipeDetailByRecipeId(UUID recipeId) {
