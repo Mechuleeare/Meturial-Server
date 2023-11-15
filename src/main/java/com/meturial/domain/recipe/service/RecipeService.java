@@ -1,9 +1,10 @@
 package com.meturial.domain.recipe.service;
 
+import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
+import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
 import com.meturial.domain.recipe.presentation.dto.response.CategoryElement;
 import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,29 +71,37 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public QueryRecipeRankingListResponse queryRecipeRankingList(String type) {
-        List<QueryRecipeRankingVo> recipeRankingVo = switch (type) {
-            case STAR_RATING -> recipeRepository.queryRecipeRankingListOrderByStarRating();
-            case STAR_COUNT -> recipeRepository.queryRecipeRankingListOrderByStarCount();
-            default -> List.of();
-        };
-
-        List<RecipeRankingElement> recipeRankingElements = recipeRankingVo
+        List<QueryRecipeReviewVo> recipeReviewList = recipeRepository.queryRecipeReviewList();
+        List<RecipeRankingElement> recipeRankingList = recipeRepository.findAll()
                 .stream()
-                .map(this::buildRecipeRankingElement)
+                .flatMap(recipe -> recipeReviewList
+                        .stream()
+                        .filter(recipeReview -> recipeReview.getRecipeId().equals(recipe.getId()))
+                        .map(recipeReview -> {
+                            Float starRating = recipeReview.getStarRating() != null ? recipeReview.getStarRating() / recipeReview.getStarCount() : 0;
+                            return buildRecipeRankingElement(recipe, recipeReview, starRating);
+                        }))
                 .toList();
 
-        return new QueryRecipeRankingListResponse(recipeRankingElements);
+        switch (type) {
+            case STAR_RATING ->
+                    recipeRankingList = recipeRankingList.stream().sorted(Comparator.comparing(RecipeRankingElement::getStarRating).reversed()).toList();
+            case STAR_COUNT ->
+                    recipeRankingList = recipeRankingList.stream().sorted(Comparator.comparing(RecipeRankingElement::getStarCount).reversed()).toList();
+        }
+
+        return new QueryRecipeRankingListResponse(recipeRankingList);
     }
 
-    private RecipeRankingElement buildRecipeRankingElement(QueryRecipeRankingVo recipeRankingVo) {
+    private RecipeRankingElement buildRecipeRankingElement(Recipe recipe, QueryRecipeReviewVo review, Float starRating) {
         return RecipeRankingElement.builder()
-                .recipeId(recipeRankingVo.getRecipeId())
-                .name(recipeRankingVo.getName())
-                .starRating(recipeRankingVo.getStarRating())
-                .starCount(recipeRankingVo.getStarCount())
-                .recipeImageUrl(recipeRankingVo.getRecipeImageUrl())
-                .recipeCategory(List.of(recipeRankingVo.getRecipeCategory().replace(" ", "").split(",")))
-                .recipeMaterial(List.of(recipeRankingVo.getRecipeMaterial().replace(" ", "").split(",")))
+                .recipeId(recipe.getId())
+                .name(recipe.getName())
+                .starRating(starRating)
+                .starCount(review.getStarCount())
+                .recipeImageUrl(recipe.getFoodImageUrl())
+                .recipeCategory(List.of(recipe.getCategory().replace(" ", "").split(",")))
+                .recipeMaterial(List.of(recipe.getMaterial().replace(" ", "").split(",")))
                 .build();
     }
 }
