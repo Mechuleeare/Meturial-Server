@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends CrudRepository<User, UUID> {
+public interface UserRepository extends CrudRepository<User, UUID>, CustomUserRepository {
 
     Optional<User> findByEmail(String email);
 }
