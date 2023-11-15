@@ -2,7 +2,7 @@ package com.meturial.domain.recipe.domain.repository;
 
 import com.meturial.domain.recipe.domain.Category;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
+import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,5 @@ public interface CustomRecipeRepository {
 
     Optional<QueryRecipeDetailVo> queryRecipeDetailByRecipeId(UUID recipeId);
 
-    List<QueryRecipeRankingVo> queryRecipeRankingListOrderByStarRating();
-
-    List<QueryRecipeRankingVo> queryRecipeRankingListOrderByStarCount();
+    List<QueryRecipeReviewVo> queryRecipeReviewList();
 }
