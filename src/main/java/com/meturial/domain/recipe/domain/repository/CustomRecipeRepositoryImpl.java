@@ -1,7 +1,6 @@
 package com.meturial.domain.recipe.domain.repository;
 
 import com.meturial.domain.recipe.domain.Category;
-import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeRankingVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
@@ -39,8 +38,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                                 recipe.name,
                                 recipe.foodImageUrl,
                                 recipe.category,
-                                recipe.material,
-                                review.starRating
+                                recipe.material
                         ))
                 .from(recipe)
                 .leftJoin(review)
