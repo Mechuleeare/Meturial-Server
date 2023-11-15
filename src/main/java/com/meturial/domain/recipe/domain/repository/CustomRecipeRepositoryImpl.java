@@ -2,9 +2,9 @@ package com.meturial.domain.recipe.domain.repository;
 
 import com.meturial.domain.recipe.domain.Category;
 import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeRankingVo;
+import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeReviewVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
+import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -48,40 +48,19 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
     }
 
     @Override
-    public List<QueryRecipeRankingVo> queryRecipeRankingListOrderByStarRating() {
-        return queryFactory.select(
-                        new QQueryRecipeRankingVo(
+    public List<QueryRecipeReviewVo> queryRecipeReviewList() {
+        return queryFactory
+                .select(
+                        new QQueryRecipeReviewVo(
                                 recipe.id,
-                                recipe.name,
-                                review.starRating,
-                                review.recipe.id.count(),
-                                recipe.foodImageUrl,
-                                recipe.category,
-                                recipe.material
-                        ))
+                                review.starRating.sum(),
+                                review.id.count()
+                        )
+                )
                 .from(recipe)
                 .leftJoin(review)
                 .on(recipe.id.eq(review.recipe.id))
-                .orderBy(review.starRating.desc())
-                .fetch();
-    }
-
-    @Override
-    public List<QueryRecipeRankingVo> queryRecipeRankingListOrderByStarCount() {
-        return queryFactory.select(
-                        new QQueryRecipeRankingVo(
-                                recipe.id,
-                                recipe.name,
-                                review.starRating,
-                                review.recipe.id.count(),
-                                recipe.foodImageUrl,
-                                recipe.category,
-                                recipe.material
-                        ))
-                .from(recipe)
-                .leftJoin(review)
-                .on(recipe.id.eq(review.recipe.id))
-                .orderBy(review.recipe.id.count().desc())
+                .groupBy(recipe.id)
                 .fetch();
     }
 }
