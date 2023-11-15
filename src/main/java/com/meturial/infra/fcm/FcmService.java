@@ -22,7 +22,7 @@ public class FcmService {
     private static final String BREAKFAST_NOTIFICATION_TITLE = "아침식사 알림";
     private static final String LUNCH_NOTIFICATION_TITLE = "점심식사 알림";
     private static final String DINNER_NOTIFICATION_TITLE = "저녁식사 알림";
-    private static final String NOTIFICATION_BODY = "등록하신 식단으로 맛있는 식사하세요";
+    private static final String NOTIFICATION_BODY = "등록하신 식단으로 맛있는 식사하세요 :)";
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
 
