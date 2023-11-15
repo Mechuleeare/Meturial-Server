@@ -49,21 +49,22 @@ public class RecipeService {
                 .stream()
                 .map(RecipeSequenceElement::of)
                 .toList();
-
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
-        int starCount = starRatingList.size();
-        double avgStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum() / starCount;
 
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
-                .starRating((float) avgStarRating)
-                .starCount(starCount)
+                .starRating(getAverageStarRating(starRatingList))
+                .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
                 .recipeMaterial(List.of(recipeDetailVo.getRecipeMaterial().replace(" ", "").split(",")))
                 .recipeSequence(recipeSequenceList)
                 .build();
+    }
+
+    private float getAverageStarRating(List<Float> starRatingList) {
+        return (float) starRatingList.stream().mapToDouble(Float::floatValue).sum() / starRatingList.size();
     }
 
     @Transactional(readOnly = true)
