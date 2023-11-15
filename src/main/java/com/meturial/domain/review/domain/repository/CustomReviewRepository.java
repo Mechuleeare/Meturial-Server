@@ -14,4 +14,6 @@ public interface CustomReviewRepository {
     List<Review> queryMyReviewList(UUID userId);
   
     Optional<QueryReviewDetailVo> queryReviewDetail(UUID reviewId);
+
+    List<Float> queryStarRatingListByRecipeId(UUID recipeId);
 }

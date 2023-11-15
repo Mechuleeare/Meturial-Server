@@ -1,13 +1,16 @@
 package com.meturial.domain.recipe.service;
 
-import com.meturial.domain.recipe.domain.Category;
-import com.meturial.domain.recipe.domain.RecipeSequence;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeRankingVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
-import com.meturial.domain.recipe.presentation.dto.response.*;
+import com.meturial.domain.recipe.presentation.dto.response.CategoryElement;
+import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
+import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
+import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,17 +34,10 @@ public class RecipeService {
     public QueryCategoryResponse queryCategory() {
         List<CategoryElement> categoryList = recipeRepository.queryCategory()
                 .stream()
-                .map(this::buildCategoryElement)
+                .map(CategoryElement::of)
                 .toList();
 
         return new QueryCategoryResponse(categoryList);
-    }
-
-    private CategoryElement buildCategoryElement(Category category) {
-        return CategoryElement.builder()
-                .categoryName(category.getName())
-                .categoryImageUrl(category.getCategoryImageUrl())
-                .build();
     }
 
     @Transactional(readOnly = true)
@@ -49,18 +45,17 @@ public class RecipeService {
         QueryRecipeDetailVo recipeDetailVo = recipeRepository.queryRecipeDetailByRecipeId(recipeId)
                 .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
 
-        List<RecipeSequence> recipeSequences = recipeSequenceRepository.queryRecipeSequenceListByRecipeId(recipeId);
-
-        List<RecipeSequenceElement> recipeSequenceList = recipeSequences
+        List<RecipeSequenceElement> recipeSequenceList = recipeSequenceRepository.queryRecipeSequenceListByRecipeId(recipeId)
                 .stream()
-                .map(this::buildRecipeSequenceElement)
+                .map(RecipeSequenceElement::of)
                 .toList();
+        List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
 
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
-                .starRating(recipeDetailVo.getStarRating())
-                .starCount(reviewRepository.countByRecipeId(recipeId))
+                .starRating(getAverageStarRating(starRatingList))
+                .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
                 .recipeMaterial(List.of(recipeDetailVo.getRecipeMaterial().replace(" ", "").split(",")))
@@ -68,13 +63,8 @@ public class RecipeService {
                 .build();
     }
 
-    private RecipeSequenceElement buildRecipeSequenceElement(RecipeSequence recipeSequence) {
-        return RecipeSequenceElement.builder()
-                .sequenceId(recipeSequence.getId())
-                .sequence(recipeSequence.getSequence())
-                .content(recipeSequence.getContent())
-                .recipeId(recipeSequence.getRecipe().getId())
-                .build();
+    private float getAverageStarRating(List<Float> starRatingList) {
+        return (float) starRatingList.stream().mapToDouble(Float::floatValue).sum() / starRatingList.size();
     }
 
     @Transactional(readOnly = true)

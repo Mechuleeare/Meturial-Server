@@ -12,16 +12,13 @@ public class QueryRecipeDetailVo {
     private final String recipeImageUrl;
     private final String recipeCategory;
     private final String recipeMaterial;
-    private final Float starRating;
 
     @QueryProjection
-    public QueryRecipeDetailVo(UUID recipeId, String name, String recipeImageUrl, String recipeCategory,
-                               String recipeMaterial, Float starRating) {
+    public QueryRecipeDetailVo(UUID recipeId, String name, String recipeImageUrl, String recipeCategory, String recipeMaterial) {
         this.recipeId = recipeId;
         this.name = name;
         this.recipeImageUrl = recipeImageUrl;
         this.recipeCategory = recipeCategory;
         this.recipeMaterial = recipeMaterial;
-        this.starRating = starRating;
     }
 }
