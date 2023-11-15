@@ -60,4 +60,15 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                 .where(review.id.eq(reviewId))
                 .fetchOne());
     }
+
+    @Override
+    public List<Float> queryStarRatingListByRecipeId(UUID recipeId) {
+        return queryFactory
+                .select(review.starRating)
+                .from(review)
+                .innerJoin(recipe)
+                .on(review.recipe.id.eq(recipe.id))
+                .where(recipe.id.eq(recipeId))
+                .fetch();
+    }
 }
