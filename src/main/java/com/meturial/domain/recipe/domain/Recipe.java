@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_recipe")
 public class Recipe extends BaseUUIDEntity {
 
-    @Column(columnDefinition = "VARCHAR(255)", nullable = false)
+    @Column(columnDefinition = "VARCHAR(500)", nullable = false)
     private String foodImageUrl;
 
     @Column(columnDefinition = "VARCHAR(10)", nullable = false)
