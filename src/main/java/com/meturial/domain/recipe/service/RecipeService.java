@@ -1,6 +1,7 @@
 package com.meturial.domain.recipe.service;
 
 import com.meturial.domain.recipe.domain.Recipe;
+import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
@@ -14,6 +15,8 @@ import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeStarRatin
 import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
 import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
+import com.meturial.domain.user.domain.User;
+import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +33,10 @@ public class RecipeService {
     private static final String STAR_COUNT = "starCount";
 
     private final RecipeRepository recipeRepository;
+    private final ChoiceRecipeRepository choiceRecipeRepository;
     private final RecipeSequenceRepository recipeSequenceRepository;
     private final ReviewRepository reviewRepository;
+    private final SecurityFacade securityFacade;
 
     @Transactional(readOnly = true)
     public QueryCategoryResponse queryCategory() {
@@ -54,6 +59,7 @@ public class RecipeService {
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
+                .isChoice(checkChoiceByUserAndRecipe(securityFacade.getCurrentUser(),recipe))
                 .starCount(starRatingList.size())
                 .build();
     }
@@ -70,10 +76,13 @@ public class RecipeService {
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
+                .isChoice(checkChoiceByUserAndRecipe(securityFacade.getCurrentUser(), recipe))
                 .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
@@ -116,11 +125,16 @@ public class RecipeService {
         return RecipeRankingElement.builder()
                 .recipeId(recipe.getId())
                 .name(recipe.getName())
+                .isChoice(checkChoiceByUserAndRecipe(securityFacade.getCurrentUser(), recipe))
                 .starRating(starRating)
                 .starCount(review.getStarCount())
                 .recipeImageUrl(recipe.getFoodImageUrl())
                 .recipeCategory(List.of(recipe.getCategory().replace(" ", "").split(",")))
                 .recipeMaterial(List.of(recipe.getMaterial().replace(" ", "").split(",")))
                 .build();
+    }
+
+    private boolean checkChoiceByUserAndRecipe(User user, Recipe recipe) {
+        return choiceRecipeRepository.existsByUserAndRecipe(user, recipe) ? true : false;
     }
 }

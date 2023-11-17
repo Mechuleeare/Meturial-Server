@@ -11,6 +11,7 @@ import java.util.UUID;
 public class QueryRecipeDetailResponse {
     private final UUID recipeId;
     private final String name;
+    private final Boolean isChoice;
     private final Float starRating;
     private final Integer starCount;
     private final String recipeImageUrl;

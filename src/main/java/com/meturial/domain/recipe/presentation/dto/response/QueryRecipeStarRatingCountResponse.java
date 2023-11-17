@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 public class QueryRecipeStarRatingCountResponse {
     private final UUID recipeId;
+    private final Boolean isChoice;
     private final Float starRating;
     private final Integer starCount;
 }
