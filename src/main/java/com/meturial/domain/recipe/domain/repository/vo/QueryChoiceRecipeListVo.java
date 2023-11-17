@@ -11,12 +11,12 @@ public class QueryChoiceRecipeListVo {
     private final UUID recipeId;
     private final String name;
     private final Float starRating;
-    private final Long starCount;
+    private final Integer starCount;
     private final String recipeImageUrl;
     private final String recipeCategory;
 
     @QueryProjection
-    public QueryChoiceRecipeListVo(UUID choiceId, UUID recipeId, String name, Float starRating, Long starCount,
+    public QueryChoiceRecipeListVo(UUID choiceId, UUID recipeId, String name, Float starRating, Integer starCount,
                                    String recipeImageUrl, String recipeCategory) {
         this.choiceId = choiceId;
         this.recipeId = recipeId;

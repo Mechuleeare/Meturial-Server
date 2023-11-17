@@ -3,6 +3,7 @@ package com.meturial.domain.recipe.presentation;
 import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeStarRatingCountResponse;
 import com.meturial.domain.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,11 @@ public class RecipeController {
     @GetMapping("/category")
     public QueryCategoryResponse queryCategory() {
         return recipeService.queryCategory();
+    }
+
+    @GetMapping
+    public QueryRecipeStarRatingCountResponse queryStarRatingCountByRecipeName(@RequestParam("name") String name) {
+        return recipeService.queryStarRatingCountByRecipeName(name);
     }
 
     @GetMapping("/{recipe-id}")

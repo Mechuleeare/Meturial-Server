@@ -27,7 +27,7 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                                 choiceRecipe.recipe.id,
                                 recipe.name,
                                 review.starRating,
-                                review.recipe.id.count(),
+                                review.recipe.id.count().intValue(),
                                 recipe.foodImageUrl,
                                 recipe.category
                         ))
