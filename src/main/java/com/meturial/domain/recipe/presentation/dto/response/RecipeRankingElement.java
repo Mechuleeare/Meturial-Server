@@ -12,7 +12,7 @@ public class RecipeRankingElement {
     private final UUID recipeId;
     private final String name;
     private final Float starRating;
-    private final Long starCount;
+    private final Integer starCount;
     private final String recipeImageUrl;
     private final List<String> recipeCategory;
     private final List<String> recipeMaterial;

@@ -1,10 +1,7 @@
 package com.meturial.domain.recipe.domain.repository;
 
 import com.meturial.domain.recipe.domain.Category;
-import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QQueryRecipeReviewVo;
-import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
-import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
+import com.meturial.domain.recipe.domain.repository.vo.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -54,7 +51,7 @@ public class CustomRecipeRepositoryImpl implements CustomRecipeRepository {
                         new QQueryRecipeReviewVo(
                                 recipe.id,
                                 review.starRating.sum(),
-                                review.id.count()
+                                review.id.count().intValue()
                         )
                 )
                 .from(recipe)

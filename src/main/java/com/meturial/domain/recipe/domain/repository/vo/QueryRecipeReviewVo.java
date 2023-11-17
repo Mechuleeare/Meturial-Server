@@ -9,10 +9,10 @@ import java.util.UUID;
 public class QueryRecipeReviewVo {
     private final UUID recipeId;
     private final Float starRating;
-    private final Long starCount;
+    private final Integer starCount;
 
     @QueryProjection
-    public QueryRecipeReviewVo(UUID recipeId, Float starRating, Long starCount) {
+    public QueryRecipeReviewVo(UUID recipeId, Float starRating, Integer starCount) {
         this.recipeId = recipeId;
         this.starRating = starRating;
         this.starCount = starCount;
