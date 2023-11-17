@@ -16,4 +16,6 @@ public interface CustomReviewRepository {
     Optional<QueryReviewDetailVo> queryReviewDetail(UUID reviewId);
 
     List<Float> queryStarRatingListByRecipeId(UUID recipeId);
+
+    Float querySumStarRatingByRecipeId(UUID recipeId);
 }
