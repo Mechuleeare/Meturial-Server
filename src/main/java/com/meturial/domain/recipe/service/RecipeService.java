@@ -1,7 +1,6 @@
 package com.meturial.domain.recipe.service;
 
 import com.meturial.domain.recipe.domain.Recipe;
-import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
@@ -76,8 +75,7 @@ public class RecipeService {
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
-        Recipe recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
+        Recipe recipe = recipeRepository.findById(recipeId).get();
 
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
