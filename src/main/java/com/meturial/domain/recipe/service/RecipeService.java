@@ -6,7 +6,13 @@ import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
-import com.meturial.domain.recipe.presentation.dto.response.*;
+import com.meturial.domain.recipe.presentation.dto.response.CategoryElement;
+import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeRankingListResponse;
+import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeStarRatingCountResponse;
+import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
+import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,11 +49,11 @@ public class RecipeService {
                 .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
 
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipe.getId());
-        Float starRating = reviewRepository.querySumStarRatingByRecipeId(recipe.getId());
+        double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
-                .starRating(getAverageStarRating(starRating, starRatingList.size()))
+                .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
                 .starCount(starRatingList.size())
                 .build();
     }
@@ -62,11 +68,12 @@ public class RecipeService {
                 .map(RecipeSequenceElement::of)
                 .toList();
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
+        double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
-                .starRating(getAverageStarRating(starRatingList))
+                .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
                 .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
@@ -75,12 +82,8 @@ public class RecipeService {
                 .build();
     }
 
-    private float getAverageStarRating(Float starRating, int starCount) {
-        return starRating != null ? starRating / starCount : 0;
-    }
-
-    private float getAverageStarRating(List<Float> starRatingList) {
-        return (float) starRatingList.stream().mapToDouble(Float::floatValue).sum() / starRatingList.size();
+    private float getAverageStarRating(double sumStarRating, int starCount) {
+        return sumStarRating != 0 ? (float) (sumStarRating / starCount) : 0;
     }
 
     @Transactional(readOnly = true)

@@ -53,8 +53,7 @@ public class ChoiceRecipeService {
 
     @Transactional(readOnly = true)
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
-        List<QueryChoiceRecipeListVo> choiceRecipeList =
-                choiceRecipeRepository.queryChoiceRecipeList(securityFacade.getCurrentUserId());
+        List<QueryChoiceRecipeListVo> choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeList(securityFacade.getCurrentUserId());
 
         return new QueryChoiceRecipeListResponse(
                 choiceRecipeList.size(),
