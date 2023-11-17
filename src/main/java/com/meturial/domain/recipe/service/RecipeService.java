@@ -6,6 +6,7 @@ import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
+import com.meturial.domain.recipe.facade.ChoiceRecipeFacade;
 import com.meturial.domain.recipe.presentation.dto.response.CategoryElement;
 import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
@@ -14,6 +15,7 @@ import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeStarRatin
 import com.meturial.domain.recipe.presentation.dto.response.RecipeRankingElement;
 import com.meturial.domain.recipe.presentation.dto.response.RecipeSequenceElement;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
+import com.meturial.global.security.SecurityFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeSequenceRepository recipeSequenceRepository;
     private final ReviewRepository reviewRepository;
+    private final SecurityFacade securityFacade;
+    private final ChoiceRecipeFacade choiceRecipeFacade;
 
     @Transactional(readOnly = true)
     public QueryCategoryResponse queryCategory() {
@@ -54,6 +58,7 @@ public class RecipeService {
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
+                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(),recipe))
                 .starCount(starRatingList.size())
                 .build();
     }
@@ -70,10 +75,13 @@ public class RecipeService {
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
+                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipe))
                 .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))
@@ -116,6 +124,7 @@ public class RecipeService {
         return RecipeRankingElement.builder()
                 .recipeId(recipe.getId())
                 .name(recipe.getName())
+                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipe))
                 .starRating(starRating)
                 .starCount(review.getStarCount())
                 .recipeImageUrl(recipe.getFoodImageUrl())
