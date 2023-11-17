@@ -66,7 +66,7 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
         return queryFactory
                 .select(review.starRating)
                 .from(review)
-                .innerJoin(recipe)
+                .leftJoin(recipe)
                 .on(review.recipe.id.eq(recipe.id))
                 .where(recipe.id.eq(recipeId))
                 .fetch();
