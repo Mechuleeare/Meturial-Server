@@ -58,7 +58,7 @@ public class RecipeService {
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
-                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(),recipe))
+                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipe))
                 .starCount(starRatingList.size())
                 .build();
     }
@@ -103,11 +103,10 @@ public class RecipeService {
                         .stream()
                         .filter(recipeReview -> recipeReview.getRecipeId().equals(recipe.getId()))
                         .map(recipeReview -> buildRecipeRankingElement(
-                                        recipe,
-                                        recipeReview,
-                                        getAverageStarRating(recipeReview.getStarRating(), recipeReview.getStarCount())
-                                )
-                        ))
+                                recipe,
+                                recipeReview,
+                                getAverageStarRating(recipeReview.getStarRating(), recipeReview.getStarCount())
+                        )))
                 .toList();
 
         switch (type) {
@@ -118,6 +117,10 @@ public class RecipeService {
         }
 
         return new QueryRecipeRankingListResponse(recipeRankingList);
+    }
+
+    private Float getAverageStarRating(Float sumStarRating, Integer starCount) {
+        return sumStarRating != null ? (sumStarRating / starCount) : 0;
     }
 
     private RecipeRankingElement buildRecipeRankingElement(Recipe recipe, QueryRecipeReviewVo review, Float starRating) {
