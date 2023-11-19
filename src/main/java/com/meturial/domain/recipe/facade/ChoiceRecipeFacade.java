@@ -24,4 +24,8 @@ public class ChoiceRecipeFacade {
         return choiceRecipeRepository.findById(choiceRecipeId)
                 .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
     }
+
+    public ChoiceRecipe findByUserIdAndRecipeId(UUID userId, UUID recipeId) {
+        return choiceRecipeRepository.findByUserIdAndRecipeId(userId, recipeId);
+    }
 }
