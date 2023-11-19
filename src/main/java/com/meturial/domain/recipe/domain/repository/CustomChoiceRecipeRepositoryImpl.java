@@ -26,7 +26,7 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                                 choiceRecipe.id,
                                 choiceRecipe.recipe.id,
                                 recipe.name,
-                                review.starRating,
+                                review.starRating.avg().floatValue(),
                                 review.recipe.id.count().intValue(),
                                 recipe.foodImageUrl,
                                 recipe.category
