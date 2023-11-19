@@ -16,20 +16,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> customExceptionHandling(CustomException e) {
-     final ErrorCode errorCode = e.getErrorCode();
-     return new ResponseEntity<>(
-             ErrorResponse.builder()
-                     .status(errorCode.getStatus())
-                     .message(errorCode.getMessage())
-                     .build(),
-             HttpStatusCode.valueOf(errorCode.getStatus())
-     );
+        final ErrorCode errorCode = e.getErrorCode();
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        errorCode.getStatus(),
+                        errorCode.getMessage()
+                ),
+                HttpStatusCode.valueOf(errorCode.getStatus())
+        );
     }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<?> bindExceptionHandling(BindException e) {
         Map<String, String> errorList = new HashMap<>();
-        for (FieldError error: e.getFieldErrors()) {
+        for (FieldError error : e.getFieldErrors()) {
             errorList.put(error.getField(),
                     error.getDefaultMessage());
         }
