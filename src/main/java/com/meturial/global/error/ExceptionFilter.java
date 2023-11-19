@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -18,8 +19,10 @@ public class ExceptionFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain
+    ) throws IOException {
         try {
             filterChain.doFilter(request, response);
         } catch (CustomException e) {
@@ -32,14 +35,12 @@ public class ExceptionFilter extends OncePerRequestFilter {
     }
 
     private void sendErrorMessage(HttpServletResponse response, ErrorCode errorCode) throws IOException {
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
-                .build();
-        String errorResponseJson = objectMapper.writeValueAsString(errorResponse);
-
+        ErrorResponse errorResponse = new ErrorResponse(
+                errorCode.getStatus(),
+                errorCode.getMessage()
+        );
         response.setStatus(errorCode.getStatus());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(errorResponseJson);
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 }
