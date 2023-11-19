@@ -43,7 +43,7 @@ public class ChoiceRecipeService {
     @Transactional
     public void deleteChoice(UUID recipeId) {
         UUID userId = securityFacade.getCurrentUserId();
-        ChoiceRecipe choiceRecipe = choiceRecipeFacade.findByUserIdAndRecipeId(userId, recipeId);
+        ChoiceRecipe choiceRecipe = choiceRecipeRepository.findByUserIdAndRecipeId(userId, recipeId);
         choiceRecipe.checkChoiceRecipeIsMine(userId);
         choiceRecipeRepository.delete(choiceRecipe);
     }
