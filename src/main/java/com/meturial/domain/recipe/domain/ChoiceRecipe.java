@@ -37,4 +37,8 @@ public class ChoiceRecipe extends BaseUUIDEntity {
             throw ChoiceRecipeIsNotMineException.EXCEPTION;
         }
     }
+
+    public boolean checkIsChoice(UUID recipeId) {
+        return this.recipe.getId().equals(recipeId);
+    }
 }
