@@ -14,7 +14,7 @@ public class RecipeFacade {
 
     private final RecipeRepository recipeRepository;
 
-    public Recipe findByRecipeId(UUID recipeId) {
+    public Recipe findById(UUID recipeId) {
         return recipeRepository.findById(recipeId)
                 .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
     }

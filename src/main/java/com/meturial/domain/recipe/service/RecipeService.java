@@ -9,6 +9,7 @@ import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeReviewVo;
 import com.meturial.domain.recipe.exception.RecipeNotFoundException;
 import com.meturial.domain.recipe.facade.ChoiceRecipeFacade;
+import com.meturial.domain.recipe.facade.RecipeFacade;
 import com.meturial.domain.recipe.presentation.dto.response.CategoryElement;
 import com.meturial.domain.recipe.presentation.dto.response.QueryCategoryResponse;
 import com.meturial.domain.recipe.presentation.dto.response.QueryRecipeDetailResponse;
@@ -39,6 +40,7 @@ public class RecipeService {
     private final ChoiceRecipeRepository choiceRecipeRepository;
     private final SecurityFacade securityFacade;
     private final ChoiceRecipeFacade choiceRecipeFacade;
+    private final RecipeFacade recipeFacade;
 
     @Transactional(readOnly = true)
     public QueryCategoryResponse queryCategory() {
@@ -57,7 +59,7 @@ public class RecipeService {
 
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipe.getId());
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
-        
+
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
@@ -78,13 +80,11 @@ public class RecipeService {
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipeId);
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
 
-        Recipe recipe = recipeRepository.findById(recipeId).get();
-
         return QueryRecipeDetailResponse.builder()
                 .recipeId(recipeDetailVo.getRecipeId())
                 .name(recipeDetailVo.getName())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))
-                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipe))
+                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipeFacade.findById(recipeId)))
                 .starCount(starRatingList.size())
                 .recipeImageUrl(recipeDetailVo.getRecipeImageUrl())
                 .recipeCategory(List.of(recipeDetailVo.getRecipeCategory().replace(" ", "").split(",")))

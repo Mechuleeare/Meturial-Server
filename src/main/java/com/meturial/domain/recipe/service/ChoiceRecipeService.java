@@ -5,7 +5,6 @@ import com.meturial.domain.recipe.domain.Recipe;
 import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryChoiceRecipeListVo;
 import com.meturial.domain.recipe.exception.ChoiceRecipeExistException;
-import com.meturial.domain.recipe.exception.ChoiceRecipeNotFoundException;
 import com.meturial.domain.recipe.facade.ChoiceRecipeFacade;
 import com.meturial.domain.recipe.facade.RecipeFacade;
 import com.meturial.domain.recipe.presentation.dto.response.QueryChoiceRecipeListResponse;
@@ -29,7 +28,7 @@ public class ChoiceRecipeService {
 
     public void addChoice(UUID recipeId) {
         User user = securityFacade.getCurrentUser();
-        Recipe recipe = recipeFacade.findByRecipeId(recipeId);
+        Recipe recipe = recipeFacade.findById(recipeId);
 
         if (choiceRecipeFacade.checkExistChoiceRecipe(user, recipe)) {
             throw ChoiceRecipeExistException.EXCEPTION;
@@ -43,11 +42,8 @@ public class ChoiceRecipeService {
 
     @Transactional
     public void deleteChoice(UUID choiceRecipeId) {
-        ChoiceRecipe choiceRecipe = choiceRecipeRepository.findById(choiceRecipeId)
-                .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
-
+        ChoiceRecipe choiceRecipe = choiceRecipeFacade.findById(choiceRecipeId);
         choiceRecipe.checkChoiceRecipeIsMine(securityFacade.getCurrentUserId());
-
         choiceRecipeRepository.delete(choiceRecipe);
     }
 
@@ -65,9 +61,6 @@ public class ChoiceRecipeService {
                 })
                 .toList();
 
-        return new QueryChoiceRecipeListResponse(
-                choiceRecipeList.size(),
-                choiceRecipeList
-        );
+        return new QueryChoiceRecipeListResponse(choiceRecipeList.size(), choiceRecipeList);
     }
 }

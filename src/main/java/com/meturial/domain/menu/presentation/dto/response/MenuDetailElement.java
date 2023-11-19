@@ -1,5 +1,6 @@
 package com.meturial.domain.menu.presentation.dto.response;
 
+import com.meturial.domain.menu.domain.Menu;
 import com.meturial.domain.menu.domain.type.MenuType;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,4 +15,14 @@ public class MenuDetailElement {
     private final String recipeName;
     private final MenuType menuType;
     private final String recipeImageUrl;
+
+    public static MenuDetailElement of(Menu menu) {
+        return MenuDetailElement.builder()
+                .menuId(menu.getId())
+                .recipeId(menu.getMenuRecipeId())
+                .recipeName(menu.getMenuRecipeName())
+                .menuType(menu.getMenuType())
+                .recipeImageUrl(menu.getMenuRecipeUrl())
+                .build();
+    }
 }

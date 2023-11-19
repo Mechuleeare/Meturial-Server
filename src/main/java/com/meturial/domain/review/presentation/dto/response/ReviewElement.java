@@ -1,5 +1,6 @@
 package com.meturial.domain.review.presentation.dto.response;
 
+import com.meturial.domain.review.domain.Review;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,4 +16,15 @@ public class ReviewElement {
     private final String reviewImageUrl;
     private final String content;
     private final LocalDateTime createdAt;
+
+    public static ReviewElement of(Review review) {
+        return ReviewElement.builder()
+                .reviewId(review.getId())
+                .writerName(review.getReviewWriterName())
+                .starRating(review.getStarRating())
+                .reviewImageUrl(review.getReviewImageUrl())
+                .content(review.getContent())
+                .createdAt(review.getCreatedAt())
+                .build();
+    }
 }

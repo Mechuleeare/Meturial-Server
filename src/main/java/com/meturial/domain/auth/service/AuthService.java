@@ -115,7 +115,6 @@ public class AuthService {
 
     @Transactional
     public void changePassword(ChangePasswordRequest request) {
-
         Certification certification = certificationRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> CodeAlreadyExpiredException.EXCEPTION);
 

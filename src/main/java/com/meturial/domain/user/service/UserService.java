@@ -77,10 +77,10 @@ public class UserService {
     }
 
     @Transactional
-    public void modifyMypage(ModifyMypageRequest request) {
+    public void modifyMyInfo(ModifyMypageRequest request) {
         User user = securityFacade.getCurrentUser();
 
-        user.modifyMypage(
+        user.modifyMyInfo(
                 request.getProfileImageUrl(),
                 request.getName(),
                 request.getAllergyInfo()

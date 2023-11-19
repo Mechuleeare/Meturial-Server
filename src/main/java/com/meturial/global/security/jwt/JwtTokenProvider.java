@@ -6,7 +6,6 @@ import com.meturial.domain.auth.presentation.dto.response.TokenResponse;
 import com.meturial.global.exception.ExpiredJwtException;
 import com.meturial.global.exception.InvalidJwtException;
 import com.meturial.global.security.auth.AuthDetailsService;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,12 +62,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader(HEADER);
-        return parseToken(bearer);
-    }
-
-    public String parseToken(String bearerToken) {
+    public String parseToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HEADER);
         if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
             return bearerToken.replace(PREFIX, "");
         }
@@ -81,13 +76,9 @@ public class JwtTokenProvider {
     }
 
     private String getTokenSubject(String token) {
-        return getTokenBody(token).getSubject();
-    }
-
-    private Claims getTokenBody(String token) {
         try {
             return Jwts.parser().setSigningKey(jwtProperty.getSecretKey())
-                    .parseClaimsJws(token).getBody();
+                    .parseClaimsJws(token).getBody().getSubject();
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             throw ExpiredJwtException.EXCEPTION;
         } catch (Exception e) {

@@ -16,13 +16,13 @@ import java.util.UUID;
 @Component
 public class S3Facade {
 
+    private static final String FOLDER_NAME = "image";
     private final AmazonS3Client amazonS3Client;
-
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
 
     public String uploadImage(MultipartFile image) {
-        String fileName = UUID.randomUUID() + image.getOriginalFilename();
+        String fileName = FOLDER_NAME + "/" + UUID.randomUUID() + image.getOriginalFilename();
 
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(
