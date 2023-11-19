@@ -20,13 +20,13 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<QueryChoiceRecipeListVo> queryChoiceRecipeList(UUID userId) {
+    public List<QueryChoiceRecipeListVo> queryChoiceRecipeListByUserId(UUID userId) {
         return queryFactory.select(
                         new QQueryChoiceRecipeListVo(
                                 choiceRecipe.id,
                                 choiceRecipe.recipe.id,
                                 recipe.name,
-                                review.starRating,
+                                review.starRating.avg().floatValue(),
                                 review.recipe.id.count().intValue(),
                                 recipe.foodImageUrl,
                                 recipe.category
@@ -37,8 +37,8 @@ public class CustomChoiceRecipeRepositoryImpl implements CustomChoiceRecipeRepos
                 .leftJoin(review)
                 .on(choiceRecipe.recipe.id.eq(review.recipe.id))
                 .where(choiceRecipe.user.id.eq(userId))
-                .orderBy(choiceRecipe.id.asc())
                 .groupBy(choiceRecipe.recipe.id)
+                .orderBy(choiceRecipe.id.asc())
                 .fetch();
     }
 }

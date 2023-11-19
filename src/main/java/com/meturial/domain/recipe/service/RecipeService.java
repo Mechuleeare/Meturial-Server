@@ -57,7 +57,7 @@ public class RecipeService {
 
         List<Float> starRatingList = reviewRepository.queryStarRatingListByRecipeId(recipe.getId());
         double sumStarRating = starRatingList.stream().mapToDouble(Float::floatValue).sum();
-
+        
         return QueryRecipeStarRatingCountResponse.builder()
                 .recipeId(recipe.getId())
                 .starRating(getAverageStarRating(sumStarRating, starRatingList.size()))

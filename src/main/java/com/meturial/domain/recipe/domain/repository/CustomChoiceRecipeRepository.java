@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface CustomChoiceRecipeRepository {
 
-    List<QueryChoiceRecipeListVo> queryChoiceRecipeList(UUID userId);
+    List<QueryChoiceRecipeListVo> queryChoiceRecipeListByUserId(UUID userId);
 }
