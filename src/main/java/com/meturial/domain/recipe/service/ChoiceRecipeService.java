@@ -53,7 +53,17 @@ public class ChoiceRecipeService {
 
     @Transactional(readOnly = true)
     public QueryChoiceRecipeListResponse queryChoiceRecipeList() {
-        List<QueryChoiceRecipeListVo> choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeList(securityFacade.getCurrentUserId());
+        List<QueryChoiceRecipeListVo> choiceRecipeList = choiceRecipeRepository.queryChoiceRecipeListByUserId(securityFacade.getCurrentUserId())
+                .stream()
+                .map(choiceRecipeVo -> {
+                    Float starRating = choiceRecipeVo.getStarRating() != null ? choiceRecipeVo.getStarRating() : 0;
+                    return new QueryChoiceRecipeListVo(
+                            choiceRecipeVo.getChoiceId(), choiceRecipeVo.getRecipeId(), choiceRecipeVo.getName(),
+                            starRating, choiceRecipeVo.getStarCount(),
+                            choiceRecipeVo.getRecipeImageUrl(), choiceRecipeVo.getRecipeCategory()
+                    );
+                })
+                .toList();
 
         return new QueryChoiceRecipeListResponse(
                 choiceRecipeList.size(),
