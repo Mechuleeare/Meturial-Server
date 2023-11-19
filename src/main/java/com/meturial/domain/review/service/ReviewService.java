@@ -1,13 +1,13 @@
 package com.meturial.domain.review.service;
 
 import com.meturial.domain.recipe.domain.Recipe;
-import com.meturial.domain.recipe.domain.repository.RecipeRepository;
-import com.meturial.domain.recipe.exception.RecipeNotFoundException;
+import com.meturial.domain.recipe.facade.RecipeFacade;
 import com.meturial.domain.review.domain.Review;
 import com.meturial.domain.review.domain.repository.ReviewRepository;
 import com.meturial.domain.review.domain.repository.vo.QueryReviewDetailVo;
 import com.meturial.domain.review.exception.ReviewExistException;
 import com.meturial.domain.review.exception.ReviewNotFoundException;
+import com.meturial.domain.review.facade.ReviewFacade;
 import com.meturial.domain.review.presentation.dto.request.CreateReviewRequest;
 import com.meturial.domain.review.presentation.dto.request.UpdateReviewRequest;
 import com.meturial.domain.review.presentation.dto.response.MyReviewElement;
@@ -29,14 +29,13 @@ import java.util.UUID;
 @Service
 public class ReviewService {
 
-    private final RecipeRepository recipeRepository;
     private final ReviewRepository reviewRepository;
+    private final RecipeFacade recipeFacade;
+    private final ReviewFacade reviewFacade;
     private final SecurityFacade securityFacade;
 
     public void createReview(UUID recipeId, CreateReviewRequest request) {
-        Recipe recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> RecipeNotFoundException.EXCEPTION);
-
+        Recipe recipe = recipeFacade.findById(recipeId);
         User user = securityFacade.getCurrentUser();
 
         if (reviewRepository.existsByUserAndRecipe(user, recipe)) {
@@ -55,11 +54,8 @@ public class ReviewService {
 
     @Transactional
     public void deleteReview(UUID reviewId) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
-
+        Review review = reviewFacade.findById(reviewId);
         review.checkReviewIsMine(securityFacade.getCurrentUserId());
-
         reviewRepository.delete(review);
     }
 
@@ -68,7 +64,7 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.queryReviewListByRecipeId(recipeId);
         List<ReviewElement> reviewElements = reviewList
                 .stream()
-                .map(this::buildReviewElement)
+                .map(ReviewElement::of)
                 .toList();
 
         return new QueryReviewListResponse(
@@ -78,40 +74,14 @@ public class ReviewService {
         );
     }
 
-    private ReviewElement buildReviewElement(Review review) {
-        return ReviewElement.builder()
-                .reviewId(review.getId())
-                .writerName(review.getReviewWriterName())
-                .starRating(review.getStarRating())
-                .reviewImageUrl(review.getReviewImageUrl())
-                .content(review.getContent())
-                .createdAt(review.getCreatedAt())
-                .build();
-    }
-
     @Transactional(readOnly = true)
     public QueryMyReviewListResponse queryMyReviewList() {
-        List<Review> myReviewList = reviewRepository.queryMyReviewList(securityFacade.getCurrentUserId());
-        List<MyReviewElement> myReviewElements = myReviewList
+        List<MyReviewElement> myReviewList = reviewRepository.queryMyReviewList(securityFacade.getCurrentUserId())
                 .stream()
-                .map(this::buildMyReviewElement)
+                .map(MyReviewElement::of)
                 .toList();
 
-        return new QueryMyReviewListResponse(
-                myReviewList.size(),
-                myReviewElements
-        );
-    }
-
-    private MyReviewElement buildMyReviewElement(Review review) {
-        return MyReviewElement.builder()
-                .reviewId(review.getId())
-                .recipeName(review.getReviewRecipeName())
-                .starRating(review.getStarRating())
-                .content(review.getContent())
-                .reviewImageUrl(review.getReviewImageUrl())
-                .createdAt(review.getCreatedAt())
-                .build();
+        return new QueryMyReviewListResponse(myReviewList.size(), myReviewList);
     }
 
     @Transactional(readOnly = true)
@@ -132,9 +102,7 @@ public class ReviewService {
 
     @Transactional
     public void updateReview(UUID reviewId, UpdateReviewRequest request) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
-
+        Review review = reviewFacade.findById(reviewId);
         review.checkReviewIsMine(securityFacade.getCurrentUserId());
         review.updateReview(
                 request.getStarRating(),
