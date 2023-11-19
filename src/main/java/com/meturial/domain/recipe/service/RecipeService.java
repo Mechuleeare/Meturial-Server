@@ -1,6 +1,8 @@
 package com.meturial.domain.recipe.service;
 
+import com.meturial.domain.recipe.domain.ChoiceRecipe;
 import com.meturial.domain.recipe.domain.Recipe;
+import com.meturial.domain.recipe.domain.repository.ChoiceRecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeRepository;
 import com.meturial.domain.recipe.domain.repository.RecipeSequenceRepository;
 import com.meturial.domain.recipe.domain.repository.vo.QueryRecipeDetailVo;
@@ -34,6 +36,7 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeSequenceRepository recipeSequenceRepository;
     private final ReviewRepository reviewRepository;
+    private final ChoiceRecipeRepository choiceRecipeRepository;
     private final SecurityFacade securityFacade;
     private final ChoiceRecipeFacade choiceRecipeFacade;
 
@@ -96,17 +99,22 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public QueryRecipeRankingListResponse queryRecipeRankingList(String type) {
+        List<ChoiceRecipe> choiceRecipeList = choiceRecipeRepository.findAllByUserId(securityFacade.getCurrentUserId());
         List<QueryRecipeReviewVo> recipeReviewList = recipeRepository.queryRecipeReviewList();
         List<RecipeRankingElement> recipeRankingList = recipeRepository.findAll()
                 .stream()
                 .flatMap(recipe -> recipeReviewList
                         .stream()
                         .filter(recipeReview -> recipeReview.getRecipeId().equals(recipe.getId()))
-                        .map(recipeReview -> buildRecipeRankingElement(
-                                recipe,
-                                recipeReview,
-                                getAverageStarRating(recipeReview.getStarRating(), recipeReview.getStarCount())
-                        )))
+                        .map(recipeReview -> {
+                            boolean isChoice = choiceRecipeList.stream().anyMatch(choiceRecipe -> choiceRecipe.checkIsChoice(recipe.getId()));
+                            return buildRecipeRankingElement(
+                                    recipe,
+                                    isChoice,
+                                    recipeReview,
+                                    getAverageStarRating(recipeReview.getStarRating(), recipeReview.getStarCount())
+                            );
+                        }))
                 .toList();
 
         switch (type) {
@@ -123,11 +131,11 @@ public class RecipeService {
         return sumStarRating != null ? (sumStarRating / starCount) : 0;
     }
 
-    private RecipeRankingElement buildRecipeRankingElement(Recipe recipe, QueryRecipeReviewVo review, Float starRating) {
+    private RecipeRankingElement buildRecipeRankingElement(Recipe recipe, boolean isChoice, QueryRecipeReviewVo review, Float starRating) {
         return RecipeRankingElement.builder()
                 .recipeId(recipe.getId())
                 .name(recipe.getName())
-                .isChoice(choiceRecipeFacade.checkExistChoiceRecipe(securityFacade.getCurrentUser(), recipe))
+                .isChoice(isChoice)
                 .starRating(starRating)
                 .starCount(review.getStarCount())
                 .recipeImageUrl(recipe.getFoodImageUrl())
