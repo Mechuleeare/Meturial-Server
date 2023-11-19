@@ -22,9 +22,9 @@ public class ChoiceRecipeController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{choice-recipe-id}")
-    public void deleteChoice(@PathVariable("choice-recipe-id") UUID choiceRecipeId) {
-        choiceRecipeService.deleteChoice(choiceRecipeId);
+    @DeleteMapping("/{recipe-id}")
+    public void deleteChoice(@PathVariable("recipe-id") UUID recipeId) {
+        choiceRecipeService.deleteChoice(recipeId);
     }
 
     @GetMapping
