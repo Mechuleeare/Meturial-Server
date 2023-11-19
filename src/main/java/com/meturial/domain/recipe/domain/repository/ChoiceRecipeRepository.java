@@ -6,6 +6,7 @@ import com.meturial.domain.user.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ChoiceRecipeRepository extends CrudRepository<ChoiceRecipe, UUID>, CustomChoiceRecipeRepository {
@@ -13,4 +14,6 @@ public interface ChoiceRecipeRepository extends CrudRepository<ChoiceRecipe, UUI
     boolean existsByUserAndRecipe(User user, Recipe recipe);
 
     List<ChoiceRecipe> findAllByUserId(UUID userId);
+
+    ChoiceRecipe findByUserIdAndRecipeId(UUID userId, UUID recipeId);
 }
