@@ -41,6 +41,6 @@ public class UserController {
 
     @PatchMapping("/my-page")
     public void modifyMypage(@RequestBody @Valid ModifyMypageRequest request) {
-        userService.modifyMypage(request);
+        userService.modifyMyInfo(request);
     }
 }
