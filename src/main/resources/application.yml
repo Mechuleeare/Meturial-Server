@@ -53,8 +53,8 @@ jwt:
   access_exp: ${ACCESS_EXP}
   refresh_exp: ${REFRESH_EXP}
 
-firebase:
-  path: ${FIREBASE_PATH}
+fcm:
+  value: ${FCM_VALUE}
 
 code:
   exp: ${CODE_EXP}
