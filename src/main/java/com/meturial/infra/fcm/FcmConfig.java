@@ -17,7 +17,7 @@ public class FcmConfig {
     private String path;
 
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
         try {
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(FirebaseOptions.builder()
