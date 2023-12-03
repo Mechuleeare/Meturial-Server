@@ -8,5 +8,5 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public interface MenuRepository extends CrudRepository<Menu, UUID>, CustomMenuRepository {
-    boolean existsByDateAndMenuType(LocalDate date, MenuType menuType);
+    boolean existsByDateAndMenuTypeAndUserId(LocalDate date, MenuType menuType, UUID userID);
 }

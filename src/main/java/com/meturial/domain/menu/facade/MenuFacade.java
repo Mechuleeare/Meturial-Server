@@ -16,8 +16,8 @@ public class MenuFacade {
 
     private final MenuRepository menuRepository;
 
-    public boolean checkExistMenu(LocalDate date, MenuType menuType) {
-        return menuRepository.existsByDateAndMenuType(date, menuType);
+    public boolean checkExistMenu(LocalDate date, MenuType menuType, UUID userID) {
+        return menuRepository.existsByDateAndMenuTypeAndUserId(date, menuType, userID);
     }
 
     public Menu findById(UUID menuId) {
