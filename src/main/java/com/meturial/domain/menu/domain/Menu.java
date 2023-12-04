@@ -56,13 +56,6 @@ public class Menu extends BaseUUIDEntity {
         }
     }
 
-    public void checkExistSameDateAndMenuTypeAndUserId(LocalDate date, MenuType menuType, UUID userId) {
-        boolean isExistSameDateAndMenuTypeAndUserId = this.date.equals(date) && this.menuType.equals(menuType) && this.user.getId().equals(userId);
-        if (isExistSameDateAndMenuTypeAndUserId) {
-            throw MenuExistException.EXCEPTION;
-        }
-    }
-
     public void updateMenu(ChoiceRecipe choiceRecipe, Boolean isActivated) {
         this.choiceRecipe = choiceRecipe;
         this.isActivated = isActivated;
