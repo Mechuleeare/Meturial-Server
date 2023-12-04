@@ -33,7 +33,7 @@ public class MenuService {
     private final SecurityFacade securityFacade;
 
     public void createMenu(CreateMenuRequest request) {
-        if (menuFacade.checkExistMenu(request.getDate(), request.getMenuType())) {
+        if (menuFacade.checkExistMenu(request.getDate(), request.getMenuType(), securityFacade.getCurrentUserId())) {
             throw MenuExistException.EXCEPTION;
         }
         menuRepository.save(Menu.builder()
