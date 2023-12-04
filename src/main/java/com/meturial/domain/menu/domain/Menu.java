@@ -63,9 +63,7 @@ public class Menu extends BaseUUIDEntity {
         }
     }
 
-    public void updateMenu(LocalDate date, MenuType menuType, ChoiceRecipe choiceRecipe, Boolean isActivated) {
-        this.date = date;
-        this.menuType = menuType;
+    public void updateMenu(ChoiceRecipe choiceRecipe, Boolean isActivated) {
         this.choiceRecipe = choiceRecipe;
         this.isActivated = isActivated;
     }
