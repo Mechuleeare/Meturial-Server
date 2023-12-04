@@ -16,4 +16,6 @@ public interface ChoiceRecipeRepository extends CrudRepository<ChoiceRecipe, UUI
     List<ChoiceRecipe> findAllByUserId(UUID userId);
 
     ChoiceRecipe findByUserIdAndRecipeId(UUID userId, UUID recipeId);
+
+    ChoiceRecipe findByIdAndUserId(UUID id, UUID userId);
 }

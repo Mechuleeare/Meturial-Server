@@ -20,8 +20,7 @@ public class ChoiceRecipeFacade {
         return choiceRecipeRepository.existsByUserAndRecipe(user, recipe);
     }
 
-    public ChoiceRecipe findById(UUID choiceRecipeId) {
-        return choiceRecipeRepository.findById(choiceRecipeId)
-                .orElseThrow(() -> ChoiceRecipeNotFoundException.EXCEPTION);
+    public ChoiceRecipe findByIdAndUserId(UUID choiceRecipeId, UUID userId) {
+        return choiceRecipeRepository.findByIdAndUserId(choiceRecipeId, userId);
     }
 }

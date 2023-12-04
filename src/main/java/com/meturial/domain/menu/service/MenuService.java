@@ -33,14 +33,17 @@ public class MenuService {
     private final SecurityFacade securityFacade;
 
     public void createMenu(CreateMenuRequest request) {
-        if (menuFacade.checkExistMenu(request.getDate(), request.getMenuType(), securityFacade.getCurrentUserId())) {
+        UUID userId = securityFacade.getCurrentUserId();
+
+        if (menuFacade.checkExistMenu(request.getDate(), request.getMenuType(), userId)) {
             throw MenuExistException.EXCEPTION;
         }
+
         menuRepository.save(Menu.builder()
                 .date(request.getDate())
                 .menuType(request.getMenuType())
                 .isActivated(request.getIsActivated())
-                .choiceRecipe(choiceRecipeFacade.findById(request.getChoiceRecipeId()))
+                .choiceRecipe(choiceRecipeFacade.findByIdAndUserId(request.getChoiceRecipeId(), userId))
                 .user(securityFacade.getCurrentUser())
                 .build());
     }
@@ -50,11 +53,8 @@ public class MenuService {
         UUID currentUserId = securityFacade.getCurrentUserId();
         Menu menu = menuFacade.findById(menuId);
         menu.checkMenuIsMine(currentUserId);
-        menu.checkExistSameDateAndMenuTypeAndUserId(request.getDate(), request.getMenuType(), currentUserId);
         menu.updateMenu(
-                request.getDate(),
-                request.getMenuType(),
-                choiceRecipeFacade.findById(request.getChoiceRecipeId()),
+                choiceRecipeFacade.findByIdAndUserId(request.getChoiceRecipeId(), currentUserId),
                 request.getIsActivated()
         );
     }

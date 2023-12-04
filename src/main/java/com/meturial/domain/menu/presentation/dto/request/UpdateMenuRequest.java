@@ -13,14 +13,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class UpdateMenuRequest {
-
-    @FutureOrPresent
-    @NotNull(message = "YYYY-MM-DD 형식으로 날짜를 입력하여 주세요.")
-    private LocalDate date;
-
-    @NotNull(message = "BREAKFAST(아침), LUNCH(점심), DINNER(저녁) 중 선택하여 주세요.")
-    private MenuType menuType;
-
     @NotNull(message = "찜한 레시피 아이디를 입력하여 주세요.")
     private UUID choiceRecipeId;
 
