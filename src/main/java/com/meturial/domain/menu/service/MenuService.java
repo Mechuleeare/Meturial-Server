@@ -47,9 +47,10 @@ public class MenuService {
 
     @Transactional
     public void updateMenu(UUID menuId, UpdateMenuRequest request) {
+        UUID currentUserId = securityFacade.getCurrentUserId();
         Menu menu = menuFacade.findById(menuId);
-        menu.checkMenuIsMine(securityFacade.getCurrentUserId());
-        menu.checkExistSameDateAndMenuType(request.getDate(), request.getMenuType());
+        menu.checkMenuIsMine(currentUserId);
+        menu.checkExistSameDateAndMenuTypeAndUserId(request.getDate(), request.getMenuType(), currentUserId);
         menu.updateMenu(
                 request.getDate(),
                 request.getMenuType(),
